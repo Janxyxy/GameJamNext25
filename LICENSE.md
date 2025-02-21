@@ -5,7 +5,7 @@ Everybuggy is permitted to copy, distribute, modify, merge, sell, publish, subli
 
 ## 📜 Preamble  
 This software was developed under the influence of pure **ant-telligence** and **zero documentation**.  
-The authors may or may not have been high on random mushrooms from our forest while coding.  
+The authors may or may not have been high on **random mushrooms from our forest** while coding.  
 It might work, it might not—**there is no debugging, only more bugs.**  
 
 ---
@@ -14,7 +14,7 @@ It might work, it might not—**there is no debugging, only more bugs.**
 ### TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION, AND MODIFICATION  
 
 1. You may **do whatever the pheromones tell you** with this software, so long as you acknowledge that:  
-   - The original author(s) are a bunch of ants with keyboards.  
+   - The original authors are a bunch of **ants with keyboards. **
    - This software is held together by **pure determination and tiny legs.**  
    - If it breaks, you get to keep all the pieces.  
 
