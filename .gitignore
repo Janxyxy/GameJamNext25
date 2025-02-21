@@ -61,6 +61,14 @@ sysinfo.txt
 *.unitypackage
 *.app
 
+# Janxyxy Assets
+/Assets/vFavorites/
+/Assets/vHierarchy
+/Assets/vInspector/
+Assets/vInspector.meta
+Assets/vHierarchy.meta
+Assets/vFavorites.meta
+
 # Crashlytics generated file
 crashlytics-build.properties
 
@@ -70,3 +78,6 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+
+
