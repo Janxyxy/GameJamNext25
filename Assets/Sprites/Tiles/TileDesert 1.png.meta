@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f11328b9649d5774a9102ca6289918c0
+guid: 4cb1fc843ab76c747825312d8ee339c7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 669482877052259030
-    second: TileDesert_0
+      213: 4263520835355120460
+    second: TileDesert 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TileDesert_0
+      name: TileDesert 1_0
       rect:
         serializedVersion: 2
-        x: 45
-        y: 134
-        width: 1260
-        height: 1082
+        x: 0
+        y: 0
+        width: 1350
+        height: 1350
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6da08ed212b7a4900800000000000000
-      internalID: 669482877052259030
+      spriteID: c4391d35c911b2b30800000000000000
+      internalID: 4263520835355120460
       vertices: []
       indices: 
       edges: []
@@ -174,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      TileDesert_0: 669482877052259030
+      TileForest_0: -28998329503420037
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
