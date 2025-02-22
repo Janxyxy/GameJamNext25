@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 411892c11097b4a4ea9a63952c65be22
+guid: a663040c008860148adea9a7ccef6b4b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1759777238070256059
-    second: TileHills_0
+      213: -3634890077140678651
+    second: TileAntHill 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TileHills_0
+      name: TileAntHill 1_0
       rect:
         serializedVersion: 2
-        x: 45
-        y: 134
-        width: 1260
-        height: 1082
+        x: 0
+        y: 0
+        width: 1350
+        height: 1350
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 54e1109fce30497e0800000000000000
-      internalID: -1759777238070256059
+      spriteID: 508007abbb64e8dc0800000000000000
+      internalID: -3634890077140678651
       vertices: []
       indices: 
       edges: []
@@ -174,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      TileHills_0: -1759777238070256059
+      TileAntHill_0: 9107426627296458691
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
