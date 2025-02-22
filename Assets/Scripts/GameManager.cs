@@ -67,6 +67,14 @@ public class GameManager : MonoBehaviour
         tileInfoUI.SetNormalTileUI(tileType != TileType.Anthill);
     }
 
+    internal void RegisterTile(TileType tileType, GridTile gridTile)
+    {
+        if (!tileDataDictionary.ContainsKey(gridTile))
+        {
+            tileDataDictionary[gridTile] = new GridTileData(tileType);
+        }
+    }
+
     internal Sprite GetTileIcon(TileType tileType)
     {
         for (int i = 0; i < tileInfos.Count; i++)
@@ -87,20 +95,20 @@ public class GameManager : MonoBehaviour
         tileInfoUI.SerProggresBarFill(fill);
     }
 
-    public void AddAntToCurrentTile()
+    public void AddAntToCurrentTile(int count)
     {
         if (currentTile != null && tileDataDictionary.ContainsKey(currentTile))
         {
-            tileDataDictionary[currentTile].AddAnt();
+            tileDataDictionary[currentTile].AddAnt(count);
             tileInfoUI.SetAntCount(tileDataDictionary[currentTile].antsCount);
         }
     }
 
-    public bool RemoveAntFromCurrentTile()
+    public bool RemoveAntFromCurrentTile(int count)
     {
         if (currentTile != null && tileDataDictionary.ContainsKey(currentTile))
         {
-            bool removed = tileDataDictionary[currentTile].RemoveAnt();
+            bool removed = tileDataDictionary[currentTile].RemoveAnt(count);
             if (!removed)
             {
                 Debug.Log("No ants to remove");

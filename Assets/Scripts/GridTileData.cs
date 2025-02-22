@@ -12,16 +12,16 @@ public class GridTileData
         antsCount = 0; 
     }
 
-    public void AddAnt()
+    public void AddAnt(int count)
     {
-        antsCount++;
+        antsCount += count;
     }
 
-    public bool RemoveAnt()
+    public bool RemoveAnt(int count)
     {
-        if (antsCount > 0)
+        if (antsCount >= count)
         {
-            antsCount--;
+            antsCount -= count;
             return true;
         }
         return false;

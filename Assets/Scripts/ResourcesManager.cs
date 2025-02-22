@@ -146,7 +146,6 @@ public class ResourcesManager : MonoBehaviour
 
             while (timer < generationDuration)
             {
-  
                 float fillRatio = timer / generationDuration;
                 GameManager.Instance.SerProggresBarFill(fillRatio);
 
@@ -154,19 +153,27 @@ public class ResourcesManager : MonoBehaviour
                 yield return null;
             }
 
-            foreach (var tileData in GameManager.Instance.TileDataDictionary.Values)
+            foreach (KeyValuePair<GridTile, GridTileData> entry in GameManager.Instance.TileDataDictionary)
             {
-                if (tileData.tileType == TileType.Anthill)
-                {
+                GridTile gridTile = entry.Key;
+                GridTileData tileData = entry.Value;
 
+                gridTile.ShowGeneratedCountWrapper(tileData.antsCount);
+
+                if (tileData.antsCount == 0)
+                {
+                    continue;
                 }
+
                 if (tileData.tileType == TileType.Forest)
                 {
                     AddResource(GameResourceType.Wood, tileData.antsCount);
+              
                 }
                 if (tileData.tileType == TileType.Mountain)
                 {
                     AddResource(GameResourceType.Stone, tileData.antsCount);
+         
                 }
             }
 

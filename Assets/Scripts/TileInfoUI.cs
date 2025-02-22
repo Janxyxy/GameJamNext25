@@ -27,20 +27,23 @@ public class TileInfoUI : MonoBehaviour
 
     private void OnRemoveAntClick()
     {
+        int mult = GameManager.Instance.EditMultiplier;
 
-       bool removed = GameManager.Instance.RemoveAntFromCurrentTile();
+        bool removed = GameManager.Instance.RemoveAntFromCurrentTile(mult);
         if (removed)
         {
-            ResourcesManager.Instance.AddResource(ResourcesManager.GameResourceType.Ant, 1);
+            ResourcesManager.Instance.AddResource(ResourcesManager.GameResourceType.Ant, GameManager.Instance.EditMultiplier);
         }
     }
 
     private void OnAddAntClick()
     {
-        bool added = ResourcesManager.Instance.RemoveResource(ResourcesManager.GameResourceType.Ant, 1);
+        int mult = GameManager.Instance.EditMultiplier;
+
+        bool added = ResourcesManager.Instance.RemoveResource(ResourcesManager.GameResourceType.Ant, mult);
         if(added)
         {
-            GameManager.Instance.AddAntToCurrentTile();
+            GameManager.Instance.AddAntToCurrentTile(mult);
         }
     }
 
