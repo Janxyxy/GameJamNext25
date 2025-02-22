@@ -169,7 +169,13 @@ public class ResourcesManager : MonoBehaviour
 
                 int ants = tileData.antsCount;
 
-                if (tileData.tileType == TileType.Forest)
+
+                if (tileData.tileType == TileType.Meadow)
+                {
+                    AddResource(GameResourceType.Food, ants);
+                    gridTile.ShowGeneratedCountWrapper(ants);
+                }
+                else if (tileData.tileType == TileType.Forest)
                 {
                     if (availableFood > 0)
                     {
@@ -195,11 +201,7 @@ public class ResourcesManager : MonoBehaviour
                     }
 
                 }
-                else if (tileData.tileType == TileType.Meadow)
-                {
-                    AddResource(GameResourceType.Food, ants);
-                    gridTile.ShowGeneratedCountWrapper(ants);
-                }
+
             }
             GameManager.Instance.SerProggresBarFill(0f);
         }
