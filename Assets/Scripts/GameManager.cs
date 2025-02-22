@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     private Dictionary<GridTile, GridTileData> tileDataDictionary = new Dictionary<GridTile, GridTileData>();
     public Dictionary<GridTile, GridTileData> TileDataDictionary => tileDataDictionary;
 
+    private int editMultiplier = 1;
+    public int EditMultiplier => editMultiplier;
 
     private void Awake()
     {
@@ -106,6 +108,17 @@ public class GameManager : MonoBehaviour
             tileInfoUI.SetAntCount(tileDataDictionary[currentTile].antsCount);
 
             return removed;
+        }
+        return false;
+    }
+
+    public bool SetEditMultiplier(int value)
+    {
+        if (value > 0)
+        {
+            Debug.Log("Edit multiplier set to: " + value);
+            editMultiplier = value;
+            return true;
         }
         return false;
     }
