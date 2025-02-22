@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
 using UnityEngine.UI;
+using static GridTile;
 
 public class ResourcesManager : MonoBehaviour
 {
@@ -10,9 +12,12 @@ public class ResourcesManager : MonoBehaviour
     [SerializeField] private Transform resourcesParent;
     [SerializeField] private ResourceUI resourcePrefab;
 
+    [Header("Settings")]
+    [SerializeField] private float generationDuration = 1.5f; //in seconds
+
     public static ResourcesManager Instance { get; private set; }
 
-    [SerializeField] private List<Sprite> resourcesSprites = new List<Sprite>();
+    private List<Sprite> resourcesSprites = new List<Sprite>();
 
     private Dictionary<GameResourceType, ResourceUI> resourceUIs = new Dictionary<GameResourceType, ResourceUI>();
     private Dictionary<GameResourceType, int> resources = new Dictionary<GameResourceType, int>();
@@ -21,7 +26,7 @@ public class ResourcesManager : MonoBehaviour
     {
         Wood,
         Stone,
-        Ants,
+        Ant,
         Gem
     }
 
@@ -39,18 +44,17 @@ public class ResourcesManager : MonoBehaviour
 
         LoadResources();
         InitializeResources();
+    }
 
-        ResourcesManager.Instance.AddResource(GameResourceType.Wood, 10);
-        ResourcesManager.Instance.AddResource(GameResourceType.Stone, 5);
-
+    private void Start()
+    {
+        StartCoroutine(GenerateResourcesCorutine());
     }
 
     private void LoadResources()
     {
         resourcesSprites.AddRange(Resources.LoadAll<Sprite>("Resources"));
         Debug.Log($"Loaded {resourcesSprites.Count} resources");
-
-
     }
 
     private void InitializeResources()
@@ -80,10 +84,6 @@ public class ResourcesManager : MonoBehaviour
         {
             resources[type] += amount;
         }
-        else
-        {
-            resources[type] = amount;
-        }
 
         Debug.Log($"Added {amount} {type}. Total: {resources[type]}");
 
@@ -97,6 +97,9 @@ public class ResourcesManager : MonoBehaviour
         {
             resources[type] -= amount;
             Debug.Log($"Removed {amount} {type}. Remaining: {resources[type]}");
+            // Update count in UI
+            resourceUIs[type].SetCount(resources[type]);
+
             return true;
         }
 
@@ -117,26 +120,63 @@ public class ResourcesManager : MonoBehaviour
     // Add ants
     public void AddAnt()
     {
-        AddResource(GameResourceType.Ants, 1);
+        AddResource(GameResourceType.Ant, 1);
     }
 
     // Add multiple ants
     public void AddAnts(int count)
     {
-        AddResource(GameResourceType.Ants, count);
+        AddResource(GameResourceType.Ant, count);
     }
 
     // Remove ants
     public bool RemoveAnt()
     {
-        return RemoveResource(GameResourceType.Ants, 1);
+        return RemoveResource(GameResourceType.Ant, 1);
     }
 
     // Check if an ant can be removed
     public bool CanRemoveAnt()
     {
-        return HasEnoughResource(GameResourceType.Ants, 1);
+        return HasEnoughResource(GameResourceType.Ant, 1);
     }
+
+    private IEnumerator GenerateResourcesCorutine()
+    {
+        while (true)
+        {
+            float timer = 0f;
+
+            while (timer < generationDuration)
+            {
+  
+                float fillRatio = timer / generationDuration;
+                GameManager.Instance.SerProggresBarFill(fillRatio);
+
+                timer += Time.deltaTime;
+                yield return null;
+            }
+
+            foreach (var tileData in GameManager.Instance.TileDataDictionary.Values)
+            {
+                if (tileData.tileType == TileType.Anthill)
+                {
+
+                }
+                if (tileData.tileType == TileType.Forest)
+                {
+                    AddResource(GameResourceType.Wood, tileData.antsCount);
+                }
+                if (tileData.tileType == TileType.Mountain)
+                {
+                    AddResource(GameResourceType.Stone, tileData.antsCount);
+                }
+            }
+
+            GameManager.Instance.SerProggresBarFill(0f);
+        }
+    }
+
 }
 
 

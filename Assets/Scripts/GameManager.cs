@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static GridTile;
+using static ResourcesManager;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class GameManager : MonoBehaviour
 
     private GridTile currentTile = null;
     private Dictionary<GridTile, GridTileData> tileDataDictionary = new Dictionary<GridTile, GridTileData>();
+    public Dictionary<GridTile, GridTileData> TileDataDictionary => tileDataDictionary;
+
 
     private void Awake()
     {
@@ -27,6 +30,9 @@ public class GameManager : MonoBehaviour
         }
 
         Loadresources();
+
+
+        ResourcesManager.Instance.AddResource(GameResourceType.Ant, 10);
     }
 
     private void Loadresources()
@@ -56,7 +62,27 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        tileInfoUI.SetNormalTileUI(tileType != TileType.AntHill);
+        tileInfoUI.SetNormalTileUI(tileType != TileType.Anthill);
+    }
+
+    internal Sprite GetTileIcon(TileType tileType)
+    {
+        for (int i = 0; i < tileInfos.Count; i++)
+        {
+            if (tileInfos[i].name == tileType.ToString())
+            {
+
+                return tileInfos[i].icon;
+            }
+        }
+
+        Debug.LogError("No icon found for tile type: " + tileType.ToString());
+        return null;
+    }
+
+    internal void SerProggresBarFill(float fill)
+    {
+        tileInfoUI.SerProggresBarFill(fill);
     }
 
     public void AddAntToCurrentTile()
@@ -68,7 +94,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void RemoveAntFromCurrentTile()
+    public bool RemoveAntFromCurrentTile()
     {
         if (currentTile != null && tileDataDictionary.ContainsKey(currentTile))
         {
@@ -78,7 +104,10 @@ public class GameManager : MonoBehaviour
                 Debug.Log("No ants to remove");
             }
             tileInfoUI.SetAntCount(tileDataDictionary[currentTile].antsCount);
+
+            return removed;
         }
+        return false;
     }
 
 }

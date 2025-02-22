@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class TileInfoUI : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class TileInfoUI : MonoBehaviour
     [SerializeField] private Transform normalTileUI;
     [SerializeField] private Transform antHillTileUI;
 
+    [SerializeField] private Image proggressBar;
+
     private void Awake()
     {
         addAntButton.onClick.AddListener(OnAddAntClick);
@@ -24,12 +27,21 @@ public class TileInfoUI : MonoBehaviour
 
     private void OnRemoveAntClick()
     {
-        GameManager.Instance.RemoveAntFromCurrentTile();
+
+       bool removed = GameManager.Instance.RemoveAntFromCurrentTile();
+        if (removed)
+        {
+            ResourcesManager.Instance.AddResource(ResourcesManager.GameResourceType.Ant, 1);
+        }
     }
 
     private void OnAddAntClick()
     {
-        GameManager.Instance.AddAntToCurrentTile();
+        bool added = ResourcesManager.Instance.RemoveResource(ResourcesManager.GameResourceType.Ant, 1);
+        if(added)
+        {
+            GameManager.Instance.AddAntToCurrentTile();
+        }
     }
 
     internal void SetUI(string name, string description)
@@ -47,5 +59,10 @@ public class TileInfoUI : MonoBehaviour
     {
         normalTileUI.gameObject.SetActive(active);
         antHillTileUI.gameObject.SetActive(!active);
+    }
+
+    internal void SerProggresBarFill(float fillAmount)
+    {
+        proggressBar.fillAmount = fillAmount;
     }
 }

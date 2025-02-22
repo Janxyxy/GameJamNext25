@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileName: Forest
   description: Ants can gather wood here
+  icon: {fileID: 21300000, guid: 10519ae728fa34f4a9e4e1933bc6d456, type: 3}

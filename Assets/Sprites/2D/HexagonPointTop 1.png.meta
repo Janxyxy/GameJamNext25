@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b9f05b873988f064dacfe0e7acd52690
+guid: c812f72e7fc38b74e99a5a64b46032e2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7482667652216324306
-    second: Square
+      213: -2135585597343286014
+    second: Hexagon Point Top
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 256
+  spritePixelsToUnits: 10
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -122,38 +122,88 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Square
+      name: Hexagon Point Top
       rect:
         serializedVersion: 2
-        x: 0
+        x: 15
         y: 0
-        width: 256
+        width: 226
         height: 256
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
-      outline: []
-      physicsShape: []
+      outline:
+      - - {x: -4, y: 128}
+        - {x: -113, y: 65}
+        - {x: -113, y: -65}
+        - {x: -4, y: -128}
+        - {x: 4, y: -128}
+        - {x: 113, y: -65}
+        - {x: 113, y: 65}
+        - {x: 4, y: 128}
+      physicsShape:
+      - - {x: -111, y: 64}
+        - {x: -111, y: -64}
+        - {x: 0, y: -128}
+        - {x: 111, y: -64}
+        - {x: 111, y: 64}
+        - {x: 0, y: 128}
       tessellationDetail: 0
       bones: []
-      spriteID: 2d009a6b596c7d760800000000000000
-      internalID: 7482667652216324306
+      spriteID: 20db9eac630ec52e0800000000000000
+      internalID: -2135585597343286014
       vertices: []
       indices: 
       edges: []
       weights: []
-    outline: []
+    outline:
+    - - {x: -4, y: 128}
+      - {x: -113, y: 65}
+      - {x: -113, y: -65}
+      - {x: -4, y: -128}
+      - {x: 4, y: -128}
+      - {x: 113, y: -65}
+      - {x: 113, y: 65}
+      - {x: 4, y: 128}
     customData: 
     physicsShape:
-    - - {x: -128, y: 128}
-      - {x: -128, y: -128}
-      - {x: 128, y: -128}
-      - {x: 128, y: 128}
+    - - {x: -111, y: 64}
+      - {x: -111, y: -64}
+      - {x: 0, y: -128}
+      - {x: 111, y: -64}
+      - {x: 111, y: 64}
+      - {x: 0, y: 128}
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
@@ -165,7 +215,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Square: 7482667652216324306
+      Hexagon Point Top: -2135585597343286014
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

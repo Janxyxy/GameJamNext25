@@ -5,4 +5,5 @@ public class TileSO : ScriptableObject
 {
     public string tileName;
     public string description;
+    public Sprite icon;
 }

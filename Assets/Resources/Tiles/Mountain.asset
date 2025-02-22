@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileName: Mountain
   description: Ants can gather stone here
+  icon: {fileID: 21300000, guid: 6fa1463d9ce446f4fab7540bc20c7d83, type: 3}
