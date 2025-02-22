@@ -14,7 +14,7 @@ It might work, it might not—**there is no debugging, only more bugs.**
 ### TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION, AND MODIFICATION  
 
 1. You may **do whatever the pheromones tell you** with this software, so long as you acknowledge that:  
-   - The original authors are a bunch of **ants with keyboards. **
+   - The original authors are a bunch of **ants with keyboards.**
    - This software is held together by **pure determination and tiny legs.**  
    - If it breaks, you get to keep all the pieces.  
 
