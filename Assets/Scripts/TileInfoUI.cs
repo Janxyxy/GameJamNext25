@@ -78,6 +78,7 @@ public class TileInfoUI : MonoBehaviour
 
     internal void SetAntCount(int count)
     {
+        Debug.Log($"Count {count}");
         antsCount.text = count.ToString();
     }
 

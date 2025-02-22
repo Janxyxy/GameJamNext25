@@ -1,5 +1,3 @@
-using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static GridTile;
@@ -14,7 +12,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     private GridTile currentTile = null;
-    private Dictionary<GridTile, GridTileData> tileDataDictionary = new Dictionary<GridTile, GridTileData>();
+    [SerializeField] private Dictionary<GridTile, GridTileData> tileDataDictionary = new Dictionary<GridTile, GridTileData>();
     public Dictionary<GridTile, GridTileData> TileDataDictionary => tileDataDictionary;
 
     private Dictionary<Room, RoomData> roomDataDictionary = new Dictionary<Room, RoomData>();
@@ -53,8 +51,6 @@ public class GameManager : MonoBehaviour
     {
         currentTile = gridTile;
 
-        RegisterTile(tileType, gridTile);
-
         GridTileData tileData = tileDataDictionary[gridTile];
 
         for (int i = 0; i < tileInfos.Count; i++)
@@ -62,8 +58,15 @@ public class GameManager : MonoBehaviour
             if (tileInfos[i].name == tileType.ToString())
             {
                 tileInfoUI.SetUI(tileInfos[i].tileName, tileInfos[i].description);
-                tileInfoUI.SetAntCount(tileData.antsCount);
-                break;
+
+                if(tileData.tileType == TileType.None)
+                {
+                    tileInfoUI.SetAntCount(tileData.specialAntsCount);
+                }
+                else
+                {
+                    tileInfoUI.SetAntCount(tileData.antsCount);
+                }
             }
         }
 
@@ -96,18 +99,16 @@ public class GameManager : MonoBehaviour
         {
             if (v)
             {
-                tileDataDictionary[currentTile].AddAnt(count);
-                tileInfoUI.SetAntCount(tileDataDictionary[currentTile].antsCount);
-            }
-            else
-            {
                 tileDataDictionary[currentTile].AddSpecialAnt(count);
                 tileInfoUI.SetAntCount(tileDataDictionary[currentTile].specialAntsCount);
             }
+            else
+            {
+                tileDataDictionary[currentTile].AddAnt(count);
+                tileInfoUI.SetAntCount(tileDataDictionary[currentTile].antsCount);
+            }
         }
     }
-
-
 
     public bool RemoveAntFromCurrentTile(int count, bool v)
     {

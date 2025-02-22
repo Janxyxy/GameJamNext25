@@ -54,7 +54,7 @@ public class TileManager : MonoBehaviour
             tilesRND.RemoveAt(randomIndex);
 
             // Log the hidden tile for debugging
-            Debug.Log($"Hidden tile at index {randomIndex}");
+            //Debug.Log($"Hidden tile at index {randomIndex}");
         }
     }
 
@@ -74,8 +74,6 @@ public class TileManager : MonoBehaviour
             {
                 tilesRND.Add(tile);
             }
-
-
         }
 
         // Optional: Log the number of tiles found for debugging
@@ -93,7 +91,6 @@ public class TileManager : MonoBehaviour
             if (tile.name == "Tile")
             {
                 tile.ChangeTileType(TileType.Anthill);
-                tile.OnTileClick();
                 unassignedTiles.Remove(tile);
                 break; // Only one Anthill tile
             }
@@ -131,9 +128,16 @@ public class TileManager : MonoBehaviour
             tile.ChangeTileType(randomTileType);
         }
 
-        foreach (GridTile tile in tiles) {
-            tile.SetTileIcon(); 
-        
+        // Set the tile icons and register the tiles
+        foreach (GridTile tile in tiles)
+        {
+            tile.SetTileIcon();
+            GameManager.Instance.RegisterTile(tile.tileType, tile);
+
+            if(tile.tileType == TileType.Anthill)
+            {
+                GameManager.Instance.OnTileClick(tile.tileType, tile);
+            }
         }
     }
 
@@ -145,6 +149,6 @@ public class TileManager : MonoBehaviour
         // Pick a random tile type
         int randomIndex = UnityEngine.Random.Range(0, tileTypes.Length);
         return tileTypes[randomIndex];
-      
+
     }
 }

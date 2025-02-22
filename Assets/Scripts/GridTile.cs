@@ -35,8 +35,6 @@ public class GridTile : MonoBehaviour
         button.onClick.AddListener(OnTileClick);
 
         defaultColor = generatedCount.color;
-
-
     }
 
     internal void SetTileIcon()
@@ -44,7 +42,7 @@ public class GridTile : MonoBehaviour
         Sprite tileIcon = GameManager.Instance.GetTileIcon(tileType);
 
         if (tileIcon != null)
-            Debug.Log(tileIcon.name + tileType);
+            //Debug.Log(tileIcon.name + tileType);
 
         if (tileIcon != null && tileIconImage != null)
             tileIconImage.sprite = tileIcon;
@@ -90,8 +88,6 @@ public class GridTile : MonoBehaviour
     internal void ChangeTileType(TileType tileType)
     {
         this.tileType = tileType;
-
-
     }
 
     private IEnumerator ShowGeneratedCount(int antsCount)

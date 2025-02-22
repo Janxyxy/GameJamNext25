@@ -6,21 +6,19 @@ public class GridTileData
     public GridTile.TileType tileType;
     public int antsCount;
     public int specialAntsCount;
+    public bool isBoosted;
 
     public GridTileData(GridTile.TileType type)
     {
         tileType = type;
         antsCount = 0; 
+        specialAntsCount = 0;
+        isBoosted = false;
     }
 
     public void AddAnt(int count)
     {
         antsCount += count;
-    }
-
-    public void AddSpecialAnt(int count)
-    {
-        specialAntsCount += count;
     }
 
     public bool RemoveAnt(int count)
@@ -33,6 +31,11 @@ public class GridTileData
         return false;
     }
 
+    public void AddSpecialAnt(int count)
+    {
+        specialAntsCount += count;
+    }
+
     public bool RemoveSpecialAnt(int count)
     {
         if (specialAntsCount >= count)
@@ -41,5 +44,9 @@ public class GridTileData
             return true;
         }
         return false;
+    }
+    public void Boost(bool boost)
+    {
+        isBoosted = boost;
     }
 }
