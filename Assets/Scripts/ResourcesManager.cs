@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static GridTile;
 
@@ -117,30 +119,6 @@ public class ResourcesManager : MonoBehaviour
         return resources.ContainsKey(type) && resources[type] >= amount;
     }
 
-    // Add ants
-    public void AddAnt()
-    {
-        AddResource(GameResourceType.Ant, 1);
-    }
-
-    // Add multiple ants
-    public void AddAnts(int count)
-    {
-        AddResource(GameResourceType.Ant, count);
-    }
-
-    // Remove ants
-    public bool RemoveAnt()
-    {
-        return RemoveResource(GameResourceType.Ant, 1);
-    }
-
-    // Check if an ant can be removed
-    public bool CanRemoveAnt()
-    {
-        return HasEnoughResource(GameResourceType.Ant, 1);
-    }
-
     private IEnumerator GenerateResourcesCorutine()
     {
         while (true)
@@ -203,12 +181,32 @@ public class ResourcesManager : MonoBehaviour
                     }
 
                 }
+                else if (tileData.tileType == TileType.Cave)
+                {
+                    if (availableFood > 0)
+                    {
+                        // Generate as many stone units as food permits.
+                        int stoneToGenerate = Mathf.Min(ants, availableFood);
+                        RemoveResource(GameResourceType.Food, stoneToGenerate);
+                        AddResource(GameResourceType.Stone, stoneToGenerate/2);
+
+                        GemChance(stoneToGenerate);
+                        
+
+                        gridTile.ShowGeneratedCountWrapper(stoneToGenerate);
+                    }
+
+                }
 
             }
             GameManager.Instance.SerProggresBarFill(0f);
         }
     }
 
+    private void GemChance(int howManyGems)
+    {
+        AddResource(GameResourceType.Gem, howManyGems);
+    }
 }
 
 

@@ -36,7 +36,6 @@ public class GameManager : MonoBehaviour
 
         Loadresources();
 
-
         ResourcesManager.Instance.AddResource(GameResourceType.Ant, 10);
         ResourcesManager.Instance.AddResource(GameResourceType.Food, 25);
     }

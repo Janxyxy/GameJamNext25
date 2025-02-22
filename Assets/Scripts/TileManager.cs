@@ -6,11 +6,13 @@ using static GridTile;
 public class TileManager : MonoBehaviour
 {
     protected List<GridTile> tiles = new List<GridTile>();
+    protected List<GridTile> tilesRND = new List<GridTile>();
+
 
     // Minimum counts for each tile type
     private Dictionary<TileType, int> minTileCounts = new Dictionary<TileType, int>
     {
-        { TileType.None, 5 },     // At least None tiles
+        { TileType.None, 8 },     // At least None tiles
         { TileType.Forest, 3 },   // At least Forest tiles
         { TileType.Mountain, 3 }, // At least Mountain tiles
         { TileType.Meadow, 3 },   // At least Meadow tiles
@@ -20,7 +22,40 @@ public class TileManager : MonoBehaviour
     void Start()
     {
         FindTiles();
+        RandomizeRNDTiles();
         RandomizeTilesWithMinCounts();
+    }
+
+    private void RandomizeRNDTiles()
+    {
+        // Ensure there are tiles in the tilesRND list
+        if (tilesRND.Count == 0)
+        {
+            Debug.LogWarning("No tiles in the tilesRND list to randomize!");
+            return;
+        }
+
+        // Calculate how many tiles to hide (e.g., hide 30% of the tiles)
+        int tilesToHide = Mathf.RoundToInt(tilesRND.Count * 0.3f); // Adjust the percentage as needed
+
+        // Ensure at least one tile is hidden
+        tilesToHide = Mathf.Max(1, tilesToHide);
+
+        // Hide random tiles
+        for (int i = 0; i < tilesToHide; i++)
+        {
+            // Get a random index from the tilesRND list
+            int randomIndex = UnityEngine.Random.Range(0, tilesRND.Count);
+
+            // Deactivate the tile's GameObject
+            tilesRND[randomIndex].gameObject.SetActive(false);
+
+            // Remove the tile from the tilesRND list to avoid hiding it again
+            tilesRND.RemoveAt(randomIndex);
+
+            // Log the hidden tile for debugging
+            Debug.Log($"Hidden tile at index {randomIndex}");
+        }
     }
 
     private void FindTiles()
@@ -28,8 +63,20 @@ public class TileManager : MonoBehaviour
         // Find all GridTile objects in the scene
         GridTile[] foundTiles = FindObjectsByType<GridTile>(FindObjectsSortMode.InstanceID);
 
+
+
         // Add the found tiles to the list
         tiles.AddRange(foundTiles);
+
+        foreach (GridTile tile in foundTiles)
+        {
+            if (tile.typeshi == true)
+            {
+                tilesRND.Add(tile);
+            }
+
+
+        }
 
         // Optional: Log the number of tiles found for debugging
         Debug.Log($"Found {tiles.Count} tiles in the scene.");
@@ -46,6 +93,7 @@ public class TileManager : MonoBehaviour
             if (tile.name == "Tile")
             {
                 tile.ChangeTileType(TileType.Anthill);
+                tile.OnTileClick();
                 unassignedTiles.Remove(tile);
                 break; // Only one Anthill tile
             }
@@ -84,7 +132,7 @@ public class TileManager : MonoBehaviour
         }
 
         foreach (GridTile tile in tiles) {
-            tile.SetTileIcon();
+            tile.SetTileIcon(); 
         
         }
     }
@@ -92,7 +140,7 @@ public class TileManager : MonoBehaviour
     private TileType GetRandomTileTypeExcludingAnthill()
     {
         // List of tile types to randomize (excluding Anthill)
-        TileType[] tileTypes = { TileType.None, TileType.Forest, TileType.Mountain, TileType.Meadow };
+        TileType[] tileTypes = { TileType.None, TileType.Forest, TileType.Mountain, TileType.Meadow, TileType.Cave };
 
         // Pick a random tile type
         int randomIndex = UnityEngine.Random.Range(0, tileTypes.Length);
