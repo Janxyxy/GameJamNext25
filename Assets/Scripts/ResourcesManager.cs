@@ -20,7 +20,9 @@ public class ResourcesManager : MonoBehaviour
     public enum GameResourceType
     {
         Wood,
-        Stone
+        Stone,
+        Ants,
+        Gem
     }
 
 
@@ -106,6 +108,36 @@ public class ResourcesManager : MonoBehaviour
     {
         return resources.ContainsKey(type) ? resources[type] : 0;
     }
+
+    public bool HasEnoughResource(GameResourceType type, int amount)
+    {
+        return resources.ContainsKey(type) && resources[type] >= amount;
+    }
+
+    // Add ants
+    public void AddAnt()
+    {
+        AddResource(GameResourceType.Ants, 1);
+    }
+
+    // Add multiple ants
+    public void AddAnts(int count)
+    {
+        AddResource(GameResourceType.Ants, count);
+    }
+
+    // Remove ants
+    public bool RemoveAnt()
+    {
+        return RemoveResource(GameResourceType.Ants, 1);
+    }
+
+    // Check if an ant can be removed
+    public bool CanRemoveAnt()
+    {
+        return HasEnoughResource(GameResourceType.Ants, 1);
+    }
 }
+
 
 
