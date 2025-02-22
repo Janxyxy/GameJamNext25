@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2363b2f08ab1774daf487bea29998c7, type: 3}
   m_Name: None
   m_EditorClassIdentifier: 
-  tileName: None
-  description: None
+  tileName: Booster
+  description: Booster
   icon: {fileID: 3617272052006209996, guid: a932cf21ef91ba24eba82288dc79a4d3, type: 3}

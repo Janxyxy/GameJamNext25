@@ -17,7 +17,7 @@ public class TileInfoUI : MonoBehaviour
     [SerializeField] private Transform normalTileUI;
     [SerializeField] private Transform antHillTileUI;
 
-   
+
 
     private void Awake()
     {
@@ -29,10 +29,21 @@ public class TileInfoUI : MonoBehaviour
     {
         int mult = GameManager.Instance.EditMultiplier;
 
-        bool removed = GameManager.Instance.RemoveAntFromCurrentTile(mult);
-        if (removed)
+        if (GameManager.Instance.GetTileTypeOfCurrentTile() == GridTile.TileType.None)
         {
-            ResourcesManager.Instance.AddResource(ResourcesManager.GameResourceType.Ant, GameManager.Instance.EditMultiplier);
+            bool removed = GameManager.Instance.RemoveAntFromCurrentTile(mult, true);
+            if (removed)
+            {
+                ResourcesManager.Instance.AddResource(ResourcesManager.GameResourceType.SpecialAnt, GameManager.Instance.EditMultiplier);
+            }
+        }
+        else
+        {
+            bool removed = GameManager.Instance.RemoveAntFromCurrentTile(mult, false);
+            if (removed)
+            {
+                ResourcesManager.Instance.AddResource(ResourcesManager.GameResourceType.Ant, GameManager.Instance.EditMultiplier);
+            }
         }
     }
 
@@ -40,11 +51,23 @@ public class TileInfoUI : MonoBehaviour
     {
         int mult = GameManager.Instance.EditMultiplier;
 
-        bool added = ResourcesManager.Instance.RemoveResource(ResourcesManager.GameResourceType.Ant, mult);
-        if(added)
+        if (GameManager.Instance.GetTileTypeOfCurrentTile() == GridTile.TileType.None)
         {
-            GameManager.Instance.AddAntToCurrentTile(mult);
+            bool added = ResourcesManager.Instance.RemoveResource(ResourcesManager.GameResourceType.SpecialAnt, mult);
+            if (added)
+            {
+                GameManager.Instance.AddAntToCurrentTile(mult, true);
+            }
         }
+        else
+        {
+            bool added = ResourcesManager.Instance.RemoveResource(ResourcesManager.GameResourceType.Ant, mult);
+            if (added)
+            {
+                GameManager.Instance.AddAntToCurrentTile(mult, false);
+            }
+        }
+
     }
 
     internal void SetUI(string name, string description)

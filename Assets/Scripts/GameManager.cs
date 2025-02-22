@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     private Dictionary<GridTile, GridTileData> tileDataDictionary = new Dictionary<GridTile, GridTileData>();
     public Dictionary<GridTile, GridTileData> TileDataDictionary => tileDataDictionary;
 
+    private Dictionary<Room, RoomData> roomDataDictionary = new Dictionary<Room, RoomData>();
+
     private int editMultiplier = 1;
     public int EditMultiplier => editMultiplier;
 
@@ -37,6 +39,7 @@ public class GameManager : MonoBehaviour
         Loadresources();
 
         ResourcesManager.Instance.AddResource(GameResourceType.Ant, 10);
+        ResourcesManager.Instance.AddResource(GameResourceType.SpecialAnt, 1);
         ResourcesManager.Instance.AddResource(GameResourceType.Food, 25);
     }
 
@@ -50,10 +53,7 @@ public class GameManager : MonoBehaviour
     {
         currentTile = gridTile;
 
-        if (!tileDataDictionary.ContainsKey(gridTile))
-        {
-            tileDataDictionary[gridTile] = new GridTileData(tileType);
-        }
+        RegisterTile(tileType, gridTile);
 
         GridTileData tileData = tileDataDictionary[gridTile];
 
@@ -61,21 +61,13 @@ public class GameManager : MonoBehaviour
         {
             if (tileInfos[i].name == tileType.ToString())
             {
-                tileInfoUI.SetUI(tileInfos[i].name, tileInfos[i].description);
+                tileInfoUI.SetUI(tileInfos[i].tileName, tileInfos[i].description);
                 tileInfoUI.SetAntCount(tileData.antsCount);
                 break;
             }
         }
 
         tileInfoUI.SetNormalTileUI(tileType != TileType.Anthill);
-    }
-
-    internal void RegisterTile(TileType tileType, GridTile gridTile)
-    {     
-        if (!tileDataDictionary.ContainsKey(gridTile))
-        {
-            tileDataDictionary[gridTile] = new GridTileData(tileType);
-        }
     }
 
     internal Sprite GetTileIcon(TileType tileType)
@@ -98,27 +90,50 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.SerProggresBarFill(fill);
     }
 
-    public void AddAntToCurrentTile(int count)
+    public void AddAntToCurrentTile(int count, bool v)
     {
         if (currentTile != null && tileDataDictionary.ContainsKey(currentTile))
         {
-            tileDataDictionary[currentTile].AddAnt(count);
-            tileInfoUI.SetAntCount(tileDataDictionary[currentTile].antsCount);
+            if (v)
+            {
+                tileDataDictionary[currentTile].AddAnt(count);
+                tileInfoUI.SetAntCount(tileDataDictionary[currentTile].antsCount);
+            }
+            else
+            {
+                tileDataDictionary[currentTile].AddSpecialAnt(count);
+                tileInfoUI.SetAntCount(tileDataDictionary[currentTile].specialAntsCount);
+            }
         }
     }
 
-    public bool RemoveAntFromCurrentTile(int count)
+
+
+    public bool RemoveAntFromCurrentTile(int count, bool v)
     {
         if (currentTile != null && tileDataDictionary.ContainsKey(currentTile))
         {
-            bool removed = tileDataDictionary[currentTile].RemoveAnt(count);
-            if (!removed)
+            if (v)
             {
-                Debug.Log("No ants to remove");
+                bool removed = tileDataDictionary[currentTile].RemoveAnt(count);
+                if (!removed)
+                {
+                    Debug.Log("No ants to remove");
+                }
+                tileInfoUI.SetAntCount(tileDataDictionary[currentTile].antsCount);
+                return removed;
             }
-            tileInfoUI.SetAntCount(tileDataDictionary[currentTile].antsCount);
 
-            return removed;
+            else
+            {
+                bool removed = tileDataDictionary[currentTile].RemoveSpecialAnt(count);
+                if (!removed)
+                {
+                    Debug.Log("No Special to remove");
+                }
+                tileInfoUI.SetAntCount(tileDataDictionary[currentTile].specialAntsCount);
+                return removed;
+            }
         }
         return false;
     }
@@ -139,4 +154,31 @@ public class GameManager : MonoBehaviour
         isMapOpen = !isMapOpen;
     }
 
+    // Registering rooms and tiles
+    internal void RegisterRoom(Room room)
+    {
+        if (!roomDataDictionary.ContainsKey(room))
+        {
+            roomDataDictionary[room] = new RoomData();
+        }
+    }
+    internal void RegisterTile(TileType tileType, GridTile gridTile)
+    {
+        if (!tileDataDictionary.ContainsKey(gridTile))
+        {
+            tileDataDictionary[gridTile] = new GridTileData(tileType);
+        }
+    }
+
+    public TileType GetTileTypeOfCurrentTile()
+    {
+        foreach (KeyValuePair<GridTile, GridTileData> entry in tileDataDictionary)
+        {
+            if (entry.Key == currentTile)
+            {
+                return entry.Value.tileType;
+            }
+        }
+        return TileType.None;
+    }
 }
