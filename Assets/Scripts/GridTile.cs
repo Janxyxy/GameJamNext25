@@ -6,8 +6,7 @@ using UnityEngine.UI;
 
 public class GridTile : MonoBehaviour
 {
-    [SerializeField] private TileType tileType;
-    [SerializeField] private bool isAntHill = false; // HQ is only one
+    [SerializeField] public TileType tileType;
 
     [Header("UI")]
     [SerializeField] private Image tileIconImage;
@@ -37,7 +36,7 @@ public class GridTile : MonoBehaviour
 
     private void Start()
     {
-        SetRandomTile();
+        //SetRandomTile();
         SetTileIcon();
     }
 
@@ -49,7 +48,7 @@ public class GridTile : MonoBehaviour
             tileIconImage.sprite = tileIcon;
     }
 
-    private void SetRandomTile()
+    /*private void SetRandomTile()
     {
         if (isAntHill)
         {
@@ -64,7 +63,7 @@ public class GridTile : MonoBehaviour
         }
 
         GameManager.Instance.RegisterTile(tileType, this);
-    }
+    }*/
 
     private void OnTileClick()
     {
@@ -73,7 +72,7 @@ public class GridTile : MonoBehaviour
 
     internal void ShowGeneratedCountWrapper(int antsCount)
     {
-     
+
         if (!gameObject.activeInHierarchy)
         {
             return;
@@ -84,6 +83,13 @@ public class GridTile : MonoBehaviour
             StopCoroutine(currentShowCountCoroutine);
         }
         currentShowCountCoroutine = StartCoroutine(ShowGeneratedCount(antsCount));
+    }
+
+    internal void ChangeTileType(TileType tileType)
+    {
+        this.tileType = tileType;
+
+        
     }
 
     private IEnumerator ShowGeneratedCount(int antsCount)

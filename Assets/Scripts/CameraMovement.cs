@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class SmoothCameraScroll : MonoBehaviour
@@ -9,6 +10,14 @@ public class SmoothCameraScroll : MonoBehaviour
 
     private float targetHeight;
     private float velocity = 0.0f;
+
+    internal void ResetCamera()
+    {
+        velocity = 0.0f;
+        targetHeight = 0.0f;
+
+        transform.position = new Vector3(transform.position.x, 0.0f, transform.position.z);
+    }
 
     void Start()
     {

@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] private Image proggressBarFill;
     [SerializeField] private Transform managerUI;
+    [SerializeField] private Transform antHillCanvas;
 
     [Header("Navigation Button")]
     [SerializeField] private Button navigateButton;
@@ -33,20 +34,11 @@ public class UIManager : MonoBehaviour
 
     private void ChangeNavigation()
     {
-       
-
         GameManager.Instance.ToggleMap();
         bool isMapOpen = GameManager.Instance.IsMapOpen;
         ShowManagerUI(isMapOpen);
 
-        if(isMapOpen)
-        {
-            buttonImage.sprite = mapIcon;
-        }
-        else
-        {
-           buttonImage.sprite = antHillIcon;
-        }
+
     }
 
     internal void SerProggresBarFill(float fillAmount)
@@ -56,11 +48,22 @@ public class UIManager : MonoBehaviour
 
     public void ShowManagerUI(bool show)
     {
-        managerUI.gameObject.SetActive(show);
-
         if (!show)
         {
-            Camera.main.gameObject.transform.position = new Vector3(0, 0, -1);
+            //SmoothCameraScroll SCS = Camera.main.GetComponent<SmoothCameraScroll>();
+            //SCS.ResetCamera();
+        }
+
+        antHillCanvas.gameObject.SetActive(!show);
+        managerUI.gameObject.SetActive(show);
+
+        if (show)
+        {
+            buttonImage.sprite = antHillIcon;
+        }
+        else
+        {
+            buttonImage.sprite = mapIcon;
         }
     }
 
