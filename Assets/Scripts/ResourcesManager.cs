@@ -23,6 +23,7 @@ public class ResourcesManager : MonoBehaviour
     {
         Wood,
         Stone,
+        Food,
         Ant,
         Gem
     }
@@ -60,7 +61,7 @@ public class ResourcesManager : MonoBehaviour
         {
             resources[type] = 0;
             ResourceUI resurceUI = Instantiate(resourcePrefab, resourcesParent);
-            resurceUI.SetCount(0);     
+            resurceUI.SetCount(0);
 
             foreach (Sprite sprite in resourcesSprites)
             {
@@ -158,25 +159,48 @@ public class ResourcesManager : MonoBehaviour
                 GridTile gridTile = entry.Key;
                 GridTileData tileData = entry.Value;
 
-                gridTile.ShowGeneratedCountWrapper(tileData.antsCount);
-
                 if (tileData.antsCount == 0)
                 {
                     continue;
                 }
 
+                int availableFood = GetResourceAmount(GameResourceType.Food);
+                Debug.Log($"Available food: {availableFood}");
+
+                int ants = tileData.antsCount;
+
                 if (tileData.tileType == TileType.Forest)
                 {
-                    AddResource(GameResourceType.Wood, tileData.antsCount);
-              
+                    if (availableFood > 0)
+                    {
+                        // Generate as many wood units as food permits.
+                        int woodToGenerate = Mathf.Min(ants, availableFood);
+                        RemoveResource(GameResourceType.Food, woodToGenerate);
+                        AddResource(GameResourceType.Wood, woodToGenerate);
+
+                        gridTile.ShowGeneratedCountWrapper(woodToGenerate);
+                    }
+
                 }
-                if (tileData.tileType == TileType.Mountain)
+                else if (tileData.tileType == TileType.Mountain)
                 {
-                    AddResource(GameResourceType.Stone, tileData.antsCount);
-         
+                    if (availableFood > 0)
+                    {
+                        // Generate as many stone units as food permits.
+                        int stoneToGenerate = Mathf.Min(ants, availableFood);
+                        RemoveResource(GameResourceType.Food, stoneToGenerate);
+                        AddResource(GameResourceType.Stone, stoneToGenerate);
+
+                        gridTile.ShowGeneratedCountWrapper(stoneToGenerate);
+                    }
+
+                }
+                else if (tileData.tileType == TileType.Meadow)
+                {
+                    AddResource(GameResourceType.Food, ants);
+                    gridTile.ShowGeneratedCountWrapper(ants);
                 }
             }
-
             GameManager.Instance.SerProggresBarFill(0f);
         }
     }

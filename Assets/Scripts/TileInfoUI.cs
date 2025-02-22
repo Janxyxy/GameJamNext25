@@ -17,7 +17,7 @@ public class TileInfoUI : MonoBehaviour
     [SerializeField] private Transform normalTileUI;
     [SerializeField] private Transform antHillTileUI;
 
-    [SerializeField] private Image proggressBar;
+   
 
     private void Awake()
     {
@@ -50,7 +50,7 @@ public class TileInfoUI : MonoBehaviour
     internal void SetUI(string name, string description)
     {
         this.tileName.text = name;
-        this.description.text = description;
+        this.description.text = $"- {description}";
     }
 
     internal void SetAntCount(int count)
@@ -62,10 +62,5 @@ public class TileInfoUI : MonoBehaviour
     {
         normalTileUI.gameObject.SetActive(active);
         antHillTileUI.gameObject.SetActive(!active);
-    }
-
-    internal void SerProggresBarFill(float fillAmount)
-    {
-        proggressBar.fillAmount = fillAmount;
     }
 }

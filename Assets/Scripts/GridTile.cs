@@ -24,6 +24,7 @@ public class GridTile : MonoBehaviour
         Anthill,
         Forest,
         Mountain,
+        Meadow
     }
 
     private void Awake()
@@ -72,6 +73,12 @@ public class GridTile : MonoBehaviour
 
     internal void ShowGeneratedCountWrapper(int antsCount)
     {
+     
+        if (!gameObject.activeInHierarchy)
+        {
+            return;
+        }
+
         if (currentShowCountCoroutine != null)
         {
             StopCoroutine(currentShowCountCoroutine);

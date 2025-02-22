@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
 
 
         ResourcesManager.Instance.AddResource(GameResourceType.Ant, 10);
+        ResourcesManager.Instance.AddResource(GameResourceType.Food, 25);
     }
 
     private void Loadresources()
@@ -68,7 +69,7 @@ public class GameManager : MonoBehaviour
     }
 
     internal void RegisterTile(TileType tileType, GridTile gridTile)
-    {
+    {     
         if (!tileDataDictionary.ContainsKey(gridTile))
         {
             tileDataDictionary[gridTile] = new GridTileData(tileType);
@@ -92,7 +93,7 @@ public class GameManager : MonoBehaviour
 
     internal void SerProggresBarFill(float fill)
     {
-        tileInfoUI.SerProggresBarFill(fill);
+        UIManager.Instance.SerProggresBarFill(fill);
     }
 
     public void AddAntToCurrentTile(int count)
