@@ -7,7 +7,15 @@ public abstract class Room : MonoBehaviour
     [SerializeField] private Button addAnts;
     [SerializeField] private Button removeAnts;
 
-    private void Awake()
+    protected RoomType roomType;
+
+    public enum RoomType
+    {
+        HatchingRoom,
+        GymRoom
+    }
+
+    protected virtual void Awake()
     {
         addAnts.onClick.AddListener(OnAddAntsClick);
         removeAnts.onClick.AddListener(OnRemoveAntsClick);
@@ -22,11 +30,16 @@ public abstract class Room : MonoBehaviour
 
     protected virtual void OnRemoveAntsClick()
     {
-     
+       
     }
 
     protected virtual void OnAddAntsClick()
     {
-        
+      
+    }
+
+    public RoomType GetRoomType()
+    {
+        return roomType;
     }
 }

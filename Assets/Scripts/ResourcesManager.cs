@@ -1,9 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using static GridTile;
+using static Room;
 
 public class ResourcesManager : MonoBehaviour
 {
@@ -128,6 +127,7 @@ public class ResourcesManager : MonoBehaviour
         while (true)
         {
             float timer = 0f;
+            int availableFood = GetResourceAmount(GameResourceType.Food);
 
             while (timer < generationDuration)
             {
@@ -152,7 +152,7 @@ public class ResourcesManager : MonoBehaviour
 
                 Debug.Log($"Ants on tile {gridTile.name}");
 
-                int availableFood = GetResourceAmount(GameResourceType.Food);
+               
                 Debug.Log($"Available food: {availableFood}");
 
                 if (tileData.tileType == TileType.Meadow)
@@ -197,12 +197,42 @@ public class ResourcesManager : MonoBehaviour
 
                         gridTile.ShowGeneratedCountWrapper(stoneToGenerate/2);
                     }
-
                 }
-
-
             }
+
+            GenerateResourcesFromRooms();
+
             GameManager.Instance.SerProggresBarFill(0f);
+        }
+    }
+
+    private void GenerateResourcesFromRooms()
+    {
+       
+        foreach (KeyValuePair<Room, RoomData> entry in GameManager.Instance.RoomDataDictionary)
+        {
+            Room room = entry.Key;
+            RoomData roomData = entry.Value;
+            int antsInRoom = roomData.antsCount;
+
+            Debug.Log($"Ants in room {room.name}");
+
+            int availableFood = GetResourceAmount(GameResourceType.Food);
+
+            if (antsInRoom == 0)
+            {
+                continue;
+            }
+
+            if(room.GetRoomType() == RoomType.HatchingRoom)
+            {
+                if (availableFood > 0)
+                {
+                    int antsToGenerate = Mathf.Min(antsInRoom, availableFood);
+                    RemoveResource(GameResourceType.Food, antsToGenerate);
+                    AddResource(GameResourceType.Ant, antsToGenerate);
+                }
+            }    
         }
     }
 

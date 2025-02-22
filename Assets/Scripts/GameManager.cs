@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static GridTile;
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
     public Dictionary<GridTile, GridTileData> TileDataDictionary => tileDataDictionary;
 
     private Dictionary<Room, RoomData> roomDataDictionary = new Dictionary<Room, RoomData>();
+    public Dictionary<Room, RoomData> RoomDataDictionary => roomDataDictionary;
 
     private int editMultiplier = 1;
     public int EditMultiplier => editMultiplier;
@@ -59,7 +61,7 @@ public class GameManager : MonoBehaviour
             {
                 tileInfoUI.SetUI(tileInfos[i].tileName, tileInfos[i].description);
 
-                if(tileData.tileType == TileType.None)
+                if (tileData.tileType == TileType.None)
                 {
                     tileInfoUI.SetAntCount(tileData.specialAntsCount);
                 }
@@ -93,6 +95,33 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.SerProggresBarFill(fill);
     }
 
+    internal void RemoveAntsFromRoom(Room room)
+    {
+        foreach (KeyValuePair<Room, RoomData> entry in roomDataDictionary)
+        {
+            if (entry.Key == room)
+            {
+                bool removed = entry.Value.RemoveAnt(editMultiplier);
+                if (removed)
+                    ResourcesManager.Instance.AddResource(GameResourceType.Ant, editMultiplier);
+            }
+        }
+    }
+
+    internal void AddAntsToRoom(Room room)
+    {
+        foreach (KeyValuePair<Room, RoomData> entry in roomDataDictionary)
+        {
+            if (entry.Key == room)
+            {
+                bool added = ResourcesManager.Instance.RemoveResource(GameResourceType.Ant, editMultiplier);
+                if (added)
+                    entry.Value.AddAnt(editMultiplier);
+
+            }
+        }
+    }
+
     public void AddAntToCurrentTile(int count, bool v)
     {
         if (currentTile != null && tileDataDictionary.ContainsKey(currentTile))
@@ -116,23 +145,22 @@ public class GameManager : MonoBehaviour
         {
             if (v)
             {
-                bool removed = tileDataDictionary[currentTile].RemoveAnt(count);
-                if (!removed)
-                {
-                    Debug.Log("No ants to remove");
-                }
-                tileInfoUI.SetAntCount(tileDataDictionary[currentTile].antsCount);
-                return removed;
-            }
-
-            else
-            {
                 bool removed = tileDataDictionary[currentTile].RemoveSpecialAnt(count);
                 if (!removed)
                 {
                     Debug.Log("No Special to remove");
                 }
                 tileInfoUI.SetAntCount(tileDataDictionary[currentTile].specialAntsCount);
+                return removed;
+            }
+            else
+            {          
+                bool removed = tileDataDictionary[currentTile].RemoveAnt(count);
+                if (!removed)
+                {
+                    Debug.Log("No ants to remove");
+                }
+                tileInfoUI.SetAntCount(tileDataDictionary[currentTile].antsCount);
                 return removed;
             }
         }
