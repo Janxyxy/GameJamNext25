@@ -19,6 +19,8 @@ public class ResourcesManager : MonoBehaviour
     private Dictionary<GameResourceType, ResourceUI> resourceUIs = new Dictionary<GameResourceType, ResourceUI>();
     private Dictionary<GameResourceType, int> resources = new Dictionary<GameResourceType, int>();
 
+    public Dictionary<GameResourceType, int> GameResources => resources;
+
     public enum GameResourceType
     {
         Wood,
