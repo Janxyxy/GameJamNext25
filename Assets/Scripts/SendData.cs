@@ -16,6 +16,7 @@ public class SendData : MonoBehaviour
         public int food;
         public int stone;
         public int ants;
+        public int gems;
     }
 
 
@@ -43,6 +44,7 @@ public class SendData : MonoBehaviour
             ResourcesManager.Instance.GameResources.TryGetValue(ResourcesManager.GameResourceType.Food, out int food);
             ResourcesManager.Instance.GameResources.TryGetValue(ResourcesManager.GameResourceType.Stone, out int stone);
             ResourcesManager.Instance.GameResources.TryGetValue(ResourcesManager.GameResourceType.Ant, out int ants);
+            ResourcesManager.Instance.GameResources.TryGetValue(ResourcesManager.GameResourceType.Gem, out int gems);
 
         string json = JsonUtility.ToJson(new StatsData
             {
@@ -52,8 +54,9 @@ public class SendData : MonoBehaviour
                 wood = wood,
                 food = food,
                 stone = stone,
-                ants = ants
-            });
+                ants = ants,
+                gems = gems
+        });
 
             byte[] jsonToSend = Encoding.UTF8.GetBytes(json);
 
