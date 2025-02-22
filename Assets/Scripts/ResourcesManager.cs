@@ -191,12 +191,9 @@ public class ResourcesManager : MonoBehaviour
                         // Generate as many stone units as food permits.
                         int stoneToGenerate = Mathf.Min(ants, availableFood);
                         RemoveResource(GameResourceType.Food, stoneToGenerate);
-                        AddResource(GameResourceType.Stone, stoneToGenerate/2);
+                        AddResource(GameResourceType.Gem, stoneToGenerate/2);
 
-                        GemChance(stoneToGenerate);
-                        
-
-                        gridTile.ShowGeneratedCountWrapper(stoneToGenerate);
+                        gridTile.ShowGeneratedCountWrapper(stoneToGenerate/2);
                     }
 
                 }
@@ -205,11 +202,6 @@ public class ResourcesManager : MonoBehaviour
             }
             GameManager.Instance.SerProggresBarFill(0f);
         }
-    }
-
-    private void GemChance(int stoneToGenerate)
-    {
-       
     }
 
     internal int CountAllAnts()
