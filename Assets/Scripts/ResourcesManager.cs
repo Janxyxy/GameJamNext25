@@ -201,9 +201,15 @@ public class ResourcesManager : MonoBehaviour
 
                 }
 
+
             }
             GameManager.Instance.SerProggresBarFill(0f);
         }
+    }
+
+    private void GemChance(int stoneToGenerate)
+    {
+       
     }
 
     internal int CountAllAnts()
