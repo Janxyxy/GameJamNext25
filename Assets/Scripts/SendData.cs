@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 public class SendData : MonoBehaviour
 {
-    private string url = "http://127.0.0.1:8000/stats";
+    private string url = "https://gamejamv4api.bagros.eu/stats";
 
     private class StatsData
     {
