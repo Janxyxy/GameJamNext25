@@ -21,6 +21,9 @@ public class ResourcesManager : MonoBehaviour
 
     public Dictionary<GameResourceType, int> GameResources => resources;
 
+    private int allAnts;
+    public int AllAnts => allAnts;
+
     public enum GameResourceType
     {
         Wood,
@@ -209,6 +212,25 @@ public class ResourcesManager : MonoBehaviour
         }
     }
 
+    internal int CountAllAnts()
+    {
+        int unusedAnts = GetResourceAmount(GameResourceType.Ant);
+        int tileAnts = 0;
+
+        foreach (KeyValuePair<GridTile, GridTileData> entry in GameManager.Instance.TileDataDictionary)
+        {
+            GridTile gridTile = entry.Key;
+            GridTileData tileData = entry.Value;
+
+            tileAnts += tileData.antsCount;
+
+        }
+
+        //TODO cound ants from rooms
+
+        allAnts = unusedAnts + tileAnts;
+        return allAnts;
+    }
 }
 
 
