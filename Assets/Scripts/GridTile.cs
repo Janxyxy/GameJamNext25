@@ -23,7 +23,8 @@ public class GridTile : MonoBehaviour
         Anthill,
         Forest,
         Mountain,
-        Meadow
+        Meadow,
+        Cave
     }
 
     private void Awake()

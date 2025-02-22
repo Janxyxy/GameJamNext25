@@ -10,10 +10,11 @@ public class TileManager : MonoBehaviour
     // Minimum counts for each tile type
     private Dictionary<TileType, int> minTileCounts = new Dictionary<TileType, int>
     {
-        { TileType.None, 1 },     // At least 2 None tiles
-        { TileType.Forest, 1 },   // At least 2 Forest tiles
-        { TileType.Mountain, 1 }, // At least 2 Mountain tiles
-        { TileType.Meadow, 3 }    // At least 2 Meadow tiles
+        { TileType.None, 5 },     // At least None tiles
+        { TileType.Forest, 3 },   // At least Forest tiles
+        { TileType.Mountain, 3 }, // At least Mountain tiles
+        { TileType.Meadow, 3 },   // At least Meadow tiles
+        { TileType.Cave, 3 }      // At least Cave tiles
     };
 
     void Start()
