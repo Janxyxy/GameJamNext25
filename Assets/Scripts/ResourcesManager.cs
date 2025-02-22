@@ -21,10 +21,10 @@ public class ResourcesManager : MonoBehaviour
 
     public enum GameResourceType
     {
+        Ant,
+        Food,
         Wood,
         Stone,
-        Food,
-        Ant,
         Gem
     }
 
