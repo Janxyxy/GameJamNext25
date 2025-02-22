@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
     private int editMultiplier = 1;
     public int EditMultiplier => editMultiplier;
 
+    private bool isMapOpen = true;
+    public bool IsMapOpen => isMapOpen;
+
     private void Awake()
     {
         if (Instance == null)
@@ -130,6 +133,11 @@ public class GameManager : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    internal void ToggleMap()
+    {
+        isMapOpen = !isMapOpen;
     }
 
 }
