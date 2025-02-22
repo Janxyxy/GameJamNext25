@@ -34,13 +34,7 @@ public class GridTile : MonoBehaviour
         defaultColor = generatedCount.color;
     }
 
-    private void Start()
-    {
-        //SetRandomTile();
-        SetTileIcon();
-    }
-
-    private void SetTileIcon()
+    internal void SetTileIcon()
     {
         Sprite tileIcon = GameManager.Instance.GetTileIcon(tileType);
 

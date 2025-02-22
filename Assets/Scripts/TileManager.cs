@@ -10,10 +10,10 @@ public class TileManager : MonoBehaviour
     // Minimum counts for each tile type
     private Dictionary<TileType, int> minTileCounts = new Dictionary<TileType, int>
     {
-        { TileType.None, 2 },     // At least 2 None tiles
+        { TileType.None, 1 },     // At least 2 None tiles
         { TileType.Forest, 1 },   // At least 2 Forest tiles
         { TileType.Mountain, 1 }, // At least 2 Mountain tiles
-        { TileType.Meadow, 1 }    // At least 2 Meadow tiles
+        { TileType.Meadow, 3 }    // At least 2 Meadow tiles
     };
 
     void Start()
@@ -25,7 +25,7 @@ public class TileManager : MonoBehaviour
     private void FindTiles()
     {
         // Find all GridTile objects in the scene
-        GridTile[] foundTiles = FindObjectsByType<GridTile>(FindObjectsSortMode.None);
+        GridTile[] foundTiles = FindObjectsByType<GridTile>(FindObjectsSortMode.InstanceID);
 
         // Add the found tiles to the list
         tiles.AddRange(foundTiles);
@@ -77,7 +77,14 @@ public class TileManager : MonoBehaviour
         {
             // Randomize the tile type (excluding Anthill)
             TileType randomTileType = GetRandomTileTypeExcludingAnthill();
+
+            //Debug.Log($"{tile.name} - {randomTileType}");
             tile.ChangeTileType(randomTileType);
+        }
+
+        foreach (GridTile tile in tiles) {
+            tile.SetTileIcon();
+        
         }
     }
 
@@ -89,5 +96,6 @@ public class TileManager : MonoBehaviour
         // Pick a random tile type
         int randomIndex = UnityEngine.Random.Range(0, tileTypes.Length);
         return tileTypes[randomIndex];
+      
     }
 }
