@@ -13,6 +13,8 @@ public class GridTile : MonoBehaviour
     [SerializeField] private TextMeshProUGUI generatedCount;
     [SerializeField] private float generatedCountDuration;
 
+    [SerializeField] public bool typeshi;
+
     private Coroutine currentShowCountCoroutine;
     private Color defaultColor;
 
@@ -33,11 +35,16 @@ public class GridTile : MonoBehaviour
         button.onClick.AddListener(OnTileClick);
 
         defaultColor = generatedCount.color;
+
+
     }
 
     internal void SetTileIcon()
     {
         Sprite tileIcon = GameManager.Instance.GetTileIcon(tileType);
+
+        if (tileIcon != null)
+            Debug.Log(tileIcon.name + tileType);
 
         if (tileIcon != null && tileIconImage != null)
             tileIconImage.sprite = tileIcon;
@@ -60,7 +67,7 @@ public class GridTile : MonoBehaviour
         GameManager.Instance.RegisterTile(tileType, this);
     }*/
 
-    private void OnTileClick()
+    internal void OnTileClick()
     {
         GameManager.Instance.OnTileClick(tileType, this);
     }
@@ -84,7 +91,7 @@ public class GridTile : MonoBehaviour
     {
         this.tileType = tileType;
 
-        
+
     }
 
     private IEnumerator ShowGeneratedCount(int antsCount)
