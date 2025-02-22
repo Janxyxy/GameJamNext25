@@ -998,6 +998,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469a8d0eb56cd3d48b27e98114569459, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resourcesParent: {fileID: 880028759}
+  resourcePrefab: {fileID: 5681034383007686363, guid: 23fd184609e86d140aedd2fdc118c5e0, type: 3}
+  resourcesSprites: []
 --- !u!1 &880028758
 GameObject:
   m_ObjectHideFlags: 0
@@ -1094,7 +1097,7 @@ MonoBehaviour:
   m_ChildAlignment: 3
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 50, y: 25}
+  m_CellSize: {x: 65, y: 25}
   m_Spacing: {x: 25, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -1934,8 +1937,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 250, y: -20}
-  m_SizeDelta: {x: -500, y: -40}
+  m_AnchoredPosition: {x: 278.11, y: -19.999985}
+  m_SizeDelta: {x: -556.22, y: -40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1556312496
 GameObject:
@@ -2243,7 +2246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7693ac69700e11c448c5f7d950c7825b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: {fileID: 425076431}
+  tileName: {fileID: 425076431}
   description: {fileID: 1456795741}
 --- !u!1 &1679690339
 GameObject:
@@ -2465,11 +2468,11 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 1
-  m_Antialiasing: 2
-  m_AntialiasingQuality: 2
-  m_StopNaN: 0
-  m_Dithering: 0
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 1
+  m_StopNaN: 1
+  m_Dithering: 1
   m_ClearDepth: 1
   m_AllowXRRendering: 1
   m_AllowHDROutput: 1
@@ -2772,8 +2775,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -100, y: -20}
-  m_SizeDelta: {x: -200, y: -40}
+  m_AnchoredPosition: {x: -121.890015, y: -19.999985}
+  m_SizeDelta: {x: -243.78, y: -40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2011890221
 MonoBehaviour:

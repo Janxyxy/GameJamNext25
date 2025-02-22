@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D;
 using UnityEngine.UI;
 
 public class ResourcesManager : MonoBehaviour
@@ -11,7 +12,7 @@ public class ResourcesManager : MonoBehaviour
 
     public static ResourcesManager Instance { get; private set; }
 
-    private List<Sprite> resourcesSprites = new List<Sprite>();
+    [SerializeField] private List<Sprite> resourcesSprites = new List<Sprite>();
 
     private Dictionary<GameResourceType, ResourceUI> resourceUIs = new Dictionary<GameResourceType, ResourceUI>();
     private Dictionary<GameResourceType, int> resources = new Dictionary<GameResourceType, int>();
@@ -28,7 +29,6 @@ public class ResourcesManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            InitializeResources();
         }
         else
         {
@@ -36,6 +36,7 @@ public class ResourcesManager : MonoBehaviour
         }
 
         LoadResources();
+        InitializeResources();
 
         ResourcesManager.Instance.AddResource(GameResourceType.Wood, 10);
         ResourcesManager.Instance.AddResource(GameResourceType.Stone, 5);
@@ -44,7 +45,10 @@ public class ResourcesManager : MonoBehaviour
 
     private void LoadResources()
     {
-        
+        resourcesSprites.AddRange(Resources.LoadAll<Sprite>("Resources"));
+        Debug.Log($"Loaded {resourcesSprites.Count} resources");
+
+
     }
 
     private void InitializeResources()
@@ -53,8 +57,16 @@ public class ResourcesManager : MonoBehaviour
         {
             resources[type] = 0;
             ResourceUI resurceUI = Instantiate(resourcePrefab, resourcesParent);
-            resurceUI.SetName(type.ToString());
-            resurceUI.SetCount(0);
+            resurceUI.SetCount(0);     
+
+            foreach (Sprite sprite in resourcesSprites)
+            {
+                if (sprite.name == type.ToString())
+                {
+                    resurceUI.SetImage(sprite);
+                    break;
+                }
+            }
 
             resourceUIs.Add(type, resurceUI);
         }
