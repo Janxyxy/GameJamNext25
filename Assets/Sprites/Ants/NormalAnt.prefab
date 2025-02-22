@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2731195444109866364}
   - component: {fileID: 1240342318896307361}
   m_Layer: 0
-  m_Name: NormalAnt1_0 (1)
+  m_Name: NormalAnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
