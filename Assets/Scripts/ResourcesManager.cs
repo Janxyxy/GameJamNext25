@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static GridTile;
 using static Room;
@@ -269,6 +270,13 @@ public class ResourcesManager : MonoBehaviour
 
         allAnts = unusedAnts + tileAnts;
         return allAnts;
+    }
+
+    public void UpgradeMultiplier(int minusGem)
+    {
+        RemoveResource(GameResourceType.Gem, minusGem);
+        generationDuration -= 0.17f;
+        Debug.Log($"tick ratio {generationDuration}");
     }
 }
 

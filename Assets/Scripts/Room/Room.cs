@@ -12,7 +12,8 @@ public abstract class Room : MonoBehaviour
     public enum RoomType
     {
         HatchingRoom,
-        GymRoom
+        GymRoom,
+        QueenRoom
     }
 
     protected virtual void Awake()
