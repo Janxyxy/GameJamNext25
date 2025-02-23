@@ -20,6 +20,11 @@ public class QueenRooom : Room
         StartCoroutine(GenerateQuests());
     }
 
+    private void HaveQuestResources()
+    {
+        throw new NotImplementedException();
+    }
+
     private IEnumerator GenerateQuests()
     {
         while (true)
