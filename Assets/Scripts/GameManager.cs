@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         ResourcesManager.Instance.AddResource(GameResourceType.Ant, 10);
+        ResourcesManager.Instance.AddResource(GameResourceType.SpecialAnt, 1);
         ResourcesManager.Instance.AddResource(GameResourceType.Food, 25);
     }
 
@@ -131,6 +132,8 @@ public class GameManager : MonoBehaviour
             {
                 tileDataDictionary[currentTile].AddSpecialAnt(count);
                 tileInfoUI.SetAntCount(tileDataDictionary[currentTile].specialAntsCount);
+
+                currentTile.ActivateBoost(true);
             }
             else
             {
@@ -152,6 +155,7 @@ public class GameManager : MonoBehaviour
                     Debug.Log("No Special to remove");
                 }
                 tileInfoUI.SetAntCount(tileDataDictionary[currentTile].specialAntsCount);
+                currentTile.ActivateBoost(false);
                 return removed;
             }
             else

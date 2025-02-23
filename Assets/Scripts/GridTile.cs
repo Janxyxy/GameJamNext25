@@ -141,4 +141,16 @@ public class GridTile : MonoBehaviour
         generatedCount.color = transparentColor;
         generatedCount.gameObject.SetActive(false);
     }
+
+    internal void ActivateBoost(bool v)
+    {
+        foreach (var item in GameManager.Instance.TileDataDictionary)
+        {
+            if (item.Key == this)
+            {
+                item.Value.isBoosted = v;
+                Debug.Log("IsBoosted: " + v);
+            }
+        }
+    }
 }
