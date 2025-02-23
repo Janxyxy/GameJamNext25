@@ -23,7 +23,7 @@ public class HatchingRoom : Room
         {
             if (roomData.Key.GetRoomType() == RoomType.HatchingRoom)
             {
-                HatchingRoomWorkers.text = $"Workers: {roomData.Value.antsCount}";
+                HatchingRoomWorkers.text = $"Workers - {roomData.Value.antsCount}";
             }
         }
     }

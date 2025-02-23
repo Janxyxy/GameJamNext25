@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     private GridTile currentTile = null;
+
+    public GridTile CurrentTile => currentTile;
     [SerializeField] private Dictionary<GridTile, GridTileData> tileDataDictionary = new Dictionary<GridTile, GridTileData>();
     public Dictionary<GridTile, GridTileData> TileDataDictionary => tileDataDictionary;
 
@@ -48,8 +50,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        ResourcesManager.Instance.AddResource(GameResourceType.Ant, 1000);
-        ResourcesManager.Instance.AddResource(GameResourceType.SpecialAnt, 1);
+        ResourcesManager.Instance.AddResource(GameResourceType.Ant, 10);
         ResourcesManager.Instance.AddResource(GameResourceType.Food, 25);
     }
 
@@ -67,7 +68,7 @@ public class GameManager : MonoBehaviour
 
                 if (tileData.tileType == TileType.None)
                 {
-                    tileInfoUI.SetAntCount(tileData.specialAntsCount);
+                    
                 }
                 else
                 {
@@ -76,7 +77,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        tileInfoUI.SetNormalTileUI(tileType != TileType.Anthill);
+        tileInfoUI.SetNormalTileUI(tileType);
     }
 
     internal Sprite GetTileIcon(TileType tileType)
@@ -126,50 +127,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void AddAntToCurrentTile(int count, bool v)
+    public void AddAntToCurrentTile(int count)
     {
         if (currentTile != null && tileDataDictionary.ContainsKey(currentTile))
         {
-            if (v)
-            {
-                tileDataDictionary[currentTile].AddSpecialAnt(count);
-                tileInfoUI.SetAntCount(tileDataDictionary[currentTile].specialAntsCount);
+            tileDataDictionary[currentTile].AddAnt(count);
+            tileInfoUI.SetAntCount(tileDataDictionary[currentTile].antsCount);
 
-                //currentTile.ActivateBoost(true);
-            }
-            else
-            {
-                tileDataDictionary[currentTile].AddAnt(count);
-                tileInfoUI.SetAntCount(tileDataDictionary[currentTile].antsCount);
-            }
+
         }
     }
 
-    public bool RemoveAntFromCurrentTile(int count, bool v)
+    public bool RemoveAntFromCurrentTile(int count)
     {
         if (currentTile != null && tileDataDictionary.ContainsKey(currentTile))
         {
-            if (v)
+
+            bool removed = tileDataDictionary[currentTile].RemoveAnt(count);
+            if (!removed)
             {
-                bool removed = tileDataDictionary[currentTile].RemoveSpecialAnt(count);
-                if (!removed)
-                {
-                    Debug.Log("No Special to remove");
-                }
-                tileInfoUI.SetAntCount(tileDataDictionary[currentTile].specialAntsCount);
-                //currentTile.ActivateBoost(false);
-                return removed;
+                Debug.Log("No ants to remove");
             }
-            else
-            {
-                bool removed = tileDataDictionary[currentTile].RemoveAnt(count);
-                if (!removed)
-                {
-                    Debug.Log("No ants to remove");
-                }
-                tileInfoUI.SetAntCount(tileDataDictionary[currentTile].antsCount);
-                return removed;
-            }
+            tileInfoUI.SetAntCount(tileDataDictionary[currentTile].antsCount);
+            return removed;
         }
         return false;
     }
@@ -226,9 +206,14 @@ public class GameManager : MonoBehaviour
 
     internal GridTileData GetTileData(GridTile gridTile)
     {
-        if (tileDataDictionary.ContainsKey(gridTile))
+        if (tileDataDictionary == null || tileDataDictionary.Count == 0)
         {
-            return tileDataDictionary[gridTile];
+            return null;
+        }
+
+        if (tileDataDictionary.TryGetValue(gridTile, out GridTileData data))
+        {
+            return data;
         }
         return null;
     }
@@ -243,7 +228,7 @@ public class GameManager : MonoBehaviour
         {
             return UnityEngine.Random.Range(300, 550);
         }
-        else if(type == TileType.Cave)
+        else if (type == TileType.Cave)
         {
             return UnityEngine.Random.Range(200, 400);
         }

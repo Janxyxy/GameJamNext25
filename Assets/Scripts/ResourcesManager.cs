@@ -13,7 +13,7 @@ public class ResourcesManager : MonoBehaviour
     [SerializeField] private ResourceUI resourcePrefab;
 
     [Header("Settings")]
-    [SerializeField] private float generationDuration = 1.5f; //in seconds
+    [SerializeField] private float generationDuration = 3f; //in seconds
 
     public static ResourcesManager Instance { get; private set; }
 
@@ -30,7 +30,6 @@ public class ResourcesManager : MonoBehaviour
     public enum GameResourceType
     {
         Ant,
-        SpecialAnt,
         Food,
         Wood,
         Stone,
