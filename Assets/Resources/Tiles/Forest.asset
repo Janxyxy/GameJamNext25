@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Forest
   m_EditorClassIdentifier: 
   tileName: Forest
-  description: Ants can gather wood here
+  description: A lush, green forest where ants can gather wood. Towering trees stretch
+    high above, their bark rough and rich with resources. Each cycle, ants will collect
+    wood, bringing it back to the colony.
   icon: {fileID: 21300000, guid: 10519ae728fa34f4a9e4e1933bc6d456, type: 3}

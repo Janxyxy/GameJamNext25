@@ -13,5 +13,8 @@ MonoBehaviour:
   m_Name: Anthill
   m_EditorClassIdentifier: 
   tileName: Anthill
-  description: Anthill XD
+  description: "The heart of the colony, where ants live, grow, and store their resources.
+    Tunnels run deep underground, providing shelter and safety. This is where eggs
+    hatch, workers organize, and the colony thrives. Protect it well\u2014your entire
+    empire depends on it!"
   icon: {fileID: 21300000, guid: a663040c008860148adea9a7ccef6b4b, type: 3}
