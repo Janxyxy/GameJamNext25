@@ -19,6 +19,7 @@ public class GridTile : MonoBehaviour
     [SerializeField] public bool isAntHill;
 
     private Coroutine currentShowGainCoroutine;
+    private Coroutine updateCountsCorutine;
 
     private Color defaultColor;
 
@@ -41,11 +42,6 @@ public class GridTile : MonoBehaviour
         defaultColor = gainCount.color;
     }
 
-    private void Start()
-    {
-        UpdateCounts();
-    }
-
     internal void SetTileIcon()
     {
         Sprite tileIcon = GameManager.Instance.GetTileIcon(tileType);
@@ -61,9 +57,27 @@ public class GridTile : MonoBehaviour
         GameManager.Instance.OnTileClick(tileType, this);
     }
 
-    private void UpdateCounts()
+    private void OnEnable()
     {
-        StartCoroutine(UpdateCountsCoroutine());
+        UpdateCounts();
+    }
+
+    private void OnDisable()
+    {
+        if (currentShowGainCoroutine != null)
+        {
+            StopCoroutine(currentShowGainCoroutine);
+        }
+
+        if (updateCountsCorutine != null)
+        {
+            StopCoroutine(updateCountsCorutine);
+        }
+    }
+
+    internal void UpdateCounts()
+    {
+        updateCountsCorutine = StartCoroutine(UpdateCountsCoroutine());
     }
 
     private IEnumerator UpdateCountsCoroutine()
@@ -87,6 +101,8 @@ public class GridTile : MonoBehaviour
             {
                 antCount.gameObject.SetActive(false);
             }
+
+            Debug.Log("AAA");
         }
     }
 
