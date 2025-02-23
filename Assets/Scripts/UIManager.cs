@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static ResourcesManager;
@@ -22,6 +23,17 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Sprite tacticalIcon;
     [SerializeField] private Sprite gainIcon;
 
+    [Header("Queen Quest Button")]
+    [SerializeField] private Button queenPopUpButton;
+
+    [Header("Queen Quest Window")]
+
+    [SerializeField] private GameObject questPopUp;
+    [SerializeField] private Button exitWindow;
+    [SerializeField] private TextMeshProUGUI questNeeds;
+
+
+
     public static UIManager Instance { get; private set; }
     private void Awake()
     {
@@ -36,6 +48,29 @@ public class UIManager : MonoBehaviour
 
         navigateButton.onClick.AddListener(ChangeNavigation);
         tacticalViewButton.onClick.AddListener(ChangeTacticalView);
+
+        questPopUp.SetActive(false);
+        queenPopUpButton.onClick.AddListener(OpenQuestWindow);
+        exitWindow.onClick.AddListener(ExitQuestWindow);
+    }
+
+    private void ExitQuestWindow()
+    {
+        questPopUp.SetActive(false);
+
+    }
+
+    private void OpenQuestWindow()
+    {
+        if (!questPopUp.activeSelf) // Check if the questPopUp is currently inactive
+        {
+            questPopUp.SetActive(true); // Activate the questPopUp
+        }
+        else
+        {
+            questPopUp.SetActive(false);
+
+        }
     }
 
     private void ChangeNavigation()
