@@ -257,6 +257,8 @@ public class ResourcesManager : MonoBehaviour
             {
                 if (availableFood >= 4)
                 {
+
+
                     int maxPossibleAnts = availableFood / 4;
                     int antsToGenerate = Mathf.Min(antsInRoom, maxPossibleAnts);
                     RemoveResource(GameResourceType.Food, antsToGenerate * 4);
