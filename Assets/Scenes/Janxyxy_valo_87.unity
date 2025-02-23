@@ -13135,6 +13135,7 @@ MonoBehaviour:
   normalTileUI: {fileID: 1255673603}
   antHillTileUI: {fileID: 1873906363}
   buttons: {fileID: 0}
+  addAnt: {fileID: 0}
 --- !u!1001 &1657727607
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16286,8 +16287,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Gym room is for speeding up ants work. The more upgraded it is the quicker
-    each tick becomes.
+  m_text: 'Gym room is for speeding up ants work. The more upgraded it is the quicker
+    each tick becomes. '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f755489ba39f33747b3f0a304a6b51ed, type: 2}
   m_sharedMaterial: {fileID: 7751133740541954065, guid: f755489ba39f33747b3f0a304a6b51ed, type: 2}
@@ -16530,10 +16531,9 @@ MonoBehaviour:
   tacticalIcon: {fileID: 21300000, guid: 0538b6a4a69d28a41a00d63e920a1244, type: 3}
   gainIcon: {fileID: 21300000, guid: 89f8ccb6bdf1dd34c892cac8f5854235, type: 3}
   queenPopUpButton: {fileID: 2125052181}
-  questPopUp: {fileID: 1201629909}
-  exitWindow: {fileID: 0}
-  questNeeds: {fileID: 0}
   dataSend: {fileID: 0}
+  helpBbutton: {fileID: 0}
+  helpTransform: {fileID: 0}
 --- !u!1 &2091117686
 GameObject:
   m_ObjectHideFlags: 0
