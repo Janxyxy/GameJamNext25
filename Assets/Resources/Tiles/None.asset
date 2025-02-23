@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2363b2f08ab1774daf487bea29998c7, type: 3}
   m_Name: None
   m_EditorClassIdentifier: 
-  tileName: Booster
-  description: Booster
+  tileName: Empty tile
+  description: "A barren, unused space with nothing to gather. Ants can\u2019t find
+    resources here, but it might be useful for future expansion. Who knows what it
+    could become?"
   icon: {fileID: 3617272052006209996, guid: a932cf21ef91ba24eba82288dc79a4d3, type: 3}
