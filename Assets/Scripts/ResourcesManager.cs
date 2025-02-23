@@ -138,6 +138,7 @@ public class ResourcesManager : MonoBehaviour
                 yield return null;
             }
 
+
             foreach (KeyValuePair<GridTile, GridTileData> entry in GameManager.Instance.TileDataDictionary)
             {
                 GridTile gridTile = entry.Key;
@@ -150,15 +151,17 @@ public class ResourcesManager : MonoBehaviour
                     continue;
                 }
 
+                gridTile.StartGeneratedCount();
+
                 Debug.Log($"Ants on tile {gridTile.name}");
 
-               
+
                 Debug.Log($"Available food: {availableFood}");
 
                 if (tileData.tileType == TileType.Meadow)
                 {
                     AddResource(GameResourceType.Food, antsOnTile);
-                    gridTile.ShowGeneratedCountWrapper(antsOnTile);
+                    gridTile.SetGainCount(antsOnTile);
                 }
                 else if (tileData.tileType == TileType.Forest)
                 {
@@ -169,7 +172,7 @@ public class ResourcesManager : MonoBehaviour
                         RemoveResource(GameResourceType.Food, woodToGenerate);
                         AddResource(GameResourceType.Wood, woodToGenerate);
 
-                        gridTile.ShowGeneratedCountWrapper(woodToGenerate);
+                        gridTile.SetGainCount(woodToGenerate);
                     }
 
                 }
@@ -182,7 +185,7 @@ public class ResourcesManager : MonoBehaviour
                         RemoveResource(GameResourceType.Food, stoneToGenerate);
                         AddResource(GameResourceType.Stone, stoneToGenerate);
 
-                        gridTile.ShowGeneratedCountWrapper(stoneToGenerate);
+                        gridTile.SetGainCount(stoneToGenerate);
                     }
 
                 }
@@ -190,12 +193,25 @@ public class ResourcesManager : MonoBehaviour
                 {
                     if (availableFood > 0)
                     {
-                        // Generate as many stone units as food permits.
-                        int stoneToGenerate = Mathf.Min(antsOnTile, availableFood);
-                        RemoveResource(GameResourceType.Food, stoneToGenerate);
-                        AddResource(GameResourceType.Gem, stoneToGenerate/2);
+                        int gemsGenerated = 0;
+                        int foodCounter = availableFood;
 
-                        gridTile.ShowGeneratedCountWrapper(stoneToGenerate/2);
+                        for (int i = 0; i < antsOnTile; i++)
+                        {
+                            RemoveResource(GameResourceType.Food, 1);
+                            if (foodCounter <= 0)
+                                break;
+
+                            if (Random.value < 0.10f)
+                            {
+
+                                AddResource(GameResourceType.Gem, 1);
+                                gemsGenerated++;
+                                foodCounter--;
+                            }
+                        }
+
+                        gridTile.SetGainCount(gemsGenerated);
                     }
                 }
             }
@@ -208,7 +224,7 @@ public class ResourcesManager : MonoBehaviour
 
     private void GenerateResourcesFromRooms()
     {
-       
+
         foreach (KeyValuePair<Room, RoomData> entry in GameManager.Instance.RoomDataDictionary)
         {
             Room room = entry.Key;
@@ -222,16 +238,16 @@ public class ResourcesManager : MonoBehaviour
                 continue;
             }
 
-            if(room.GetRoomType() == RoomType.HatchingRoom)
+            if (room.GetRoomType() == RoomType.HatchingRoom)
             {
-                Debug.Log("Hatching room!!!!!!!!!!");
-                if (availableFood > 0)
+                if (availableFood >= 4)
                 {
-                    int antsToGenerate = Mathf.Min(antsInRoom, availableFood);
-                    RemoveResource(GameResourceType.Food, antsToGenerate);
+                    int maxPossibleAnts = availableFood / 4;
+                    int antsToGenerate = Mathf.Min(antsInRoom, maxPossibleAnts);
+                    RemoveResource(GameResourceType.Food, antsToGenerate * 4);
                     AddResource(GameResourceType.Ant, antsToGenerate);
                 }
-            }    
+            }
         }
     }
 

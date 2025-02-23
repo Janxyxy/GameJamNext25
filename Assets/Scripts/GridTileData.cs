@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 
 [System.Serializable]
@@ -7,12 +8,14 @@ public class GridTileData
     public int antsCount;
     public int specialAntsCount;
     public bool isBoosted;
+    public int maxResorces;
 
     public GridTileData(GridTile.TileType type)
     {
         tileType = type;
         antsCount = 0; 
         specialAntsCount = 0;
+        maxResorces = GameManager.Instance.GetMaxResources(type);
         isBoosted = false;
     }
 

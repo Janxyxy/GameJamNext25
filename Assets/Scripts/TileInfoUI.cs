@@ -67,7 +67,6 @@ public class TileInfoUI : MonoBehaviour
                 GameManager.Instance.AddAntToCurrentTile(mult, false);
             }
         }
-
     }
 
     internal void SetUI(string name, string description)

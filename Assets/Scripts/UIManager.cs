@@ -1,5 +1,4 @@
 using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static ResourcesManager;
@@ -17,6 +16,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Sprite mapIcon;
     [SerializeField] private Sprite antHillIcon;
 
+    [Header("TacticalView")]
+    [SerializeField] private Button tacticalViewButton;
+    [SerializeField] private Image tacticalViewImage;
+    [SerializeField] private Sprite tacticalIcon;
+    [SerializeField] private Sprite gainIcon;
+
     public static UIManager Instance { get; private set; }
     private void Awake()
     {
@@ -30,6 +35,7 @@ public class UIManager : MonoBehaviour
         }
 
         navigateButton.onClick.AddListener(ChangeNavigation);
+        tacticalViewButton.onClick.AddListener(ChangeTacticalView);
     }
 
     private void ChangeNavigation()
@@ -37,7 +43,12 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.ToggleMap();
         bool isMapOpen = GameManager.Instance.IsMapOpen;
         ShowManagerUI(isMapOpen);
-
+    }
+    private void ChangeTacticalView()
+    {
+        GameManager.Instance.ToggleTacticalView();
+        bool isTacticalViewOpen = GameManager.Instance.TacticalView;
+        ChangeTacticalButtonIcon(isTacticalViewOpen);
 
     }
 
@@ -64,6 +75,18 @@ public class UIManager : MonoBehaviour
         else
         {
             buttonImage.sprite = mapIcon;
+        }
+    }
+
+    private void ChangeTacticalButtonIcon(bool isTacticalViewOpen)
+    {
+        if (isTacticalViewOpen)
+        {
+            tacticalViewImage.sprite = tacticalIcon;
+        }
+        else
+        {
+            tacticalViewImage.sprite = gainIcon;
         }
     }
 

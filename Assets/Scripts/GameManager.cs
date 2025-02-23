@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static GridTile;
@@ -24,6 +23,8 @@ public class GameManager : MonoBehaviour
 
     private bool isMapOpen = true;
     public bool IsMapOpen => isMapOpen;
+    private bool tacticalView = false;
+    public bool TacticalView => tacticalView;
 
     private void Awake()
     {
@@ -46,7 +47,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        ResourcesManager.Instance.AddResource(GameResourceType.Ant, 10);
+       // ResourcesManager.Instance.AddResource(GameResourceType.Ant, 10);
+        ResourcesManager.Instance.AddResource(GameResourceType.Ant, 1000);
         ResourcesManager.Instance.AddResource(GameResourceType.SpecialAnt, 1);
         ResourcesManager.Instance.AddResource(GameResourceType.Food, 25);
     }
@@ -133,7 +135,7 @@ public class GameManager : MonoBehaviour
                 tileDataDictionary[currentTile].AddSpecialAnt(count);
                 tileInfoUI.SetAntCount(tileDataDictionary[currentTile].specialAntsCount);
 
-                currentTile.ActivateBoost(true);
+                //currentTile.ActivateBoost(true);
             }
             else
             {
@@ -155,7 +157,7 @@ public class GameManager : MonoBehaviour
                     Debug.Log("No Special to remove");
                 }
                 tileInfoUI.SetAntCount(tileDataDictionary[currentTile].specialAntsCount);
-                currentTile.ActivateBoost(false);
+                //currentTile.ActivateBoost(false);
                 return removed;
             }
             else
@@ -214,5 +216,50 @@ public class GameManager : MonoBehaviour
             }
         }
         return TileType.None;
+    }
+
+    internal int GetMaxResources(TileType type)
+    {
+        if(type == TileType.Meadow)
+        {
+            return Random.Range(300, 700);
+        }
+        else if (type == TileType.Forest)
+        {
+            return Random.Range(300, 700);
+        }
+        else if (type == TileType.Mountain)
+        {
+            return Random.Range(300, 700);
+
+        }else if (type == TileType.Cave)
+        {
+            return Random.Range(100, 200);
+        }
+
+        return Random.Range(300, 700);
+    }
+
+    internal void ToggleTacticalView()
+    {
+        tacticalView = !tacticalView;
+    }
+
+    internal GridTileData GetTileData(GridTile gridTile)
+    {
+        if (tileDataDictionary.ContainsKey(gridTile))
+        {
+            return tileDataDictionary[gridTile];
+        }
+        return null;
+    }
+
+
+    private void Update()
+    {
+        if(tacticalView)
+        {
+           
+        }
     }
 }

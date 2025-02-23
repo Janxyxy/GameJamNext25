@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using TMPro;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,12 +11,15 @@ public class GridTile : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private Image tileIconImage;
-    [SerializeField] private TextMeshProUGUI generatedCount;
+    [SerializeField] private TextMeshProUGUI gainCount;
+    [SerializeField] private TextMeshProUGUI antCount;
+
     [SerializeField] private float generatedCountDuration;
 
-    [SerializeField] public bool typeshi;
+    [SerializeField] public bool isAntHill;
 
-    private Coroutine currentShowCountCoroutine;
+    private Coroutine currentShowGainCoroutine;
+
     private Color defaultColor;
 
     private Button button;
@@ -34,7 +38,12 @@ public class GridTile : MonoBehaviour
         button = GetComponent<Button>();
         button.onClick.AddListener(OnTileClick);
 
-        defaultColor = generatedCount.color;
+        defaultColor = gainCount.color;
+    }
+
+    private void Start()
+    {
+        UpdateCounts();
     }
 
     internal void SetTileIcon()
@@ -42,64 +51,83 @@ public class GridTile : MonoBehaviour
         Sprite tileIcon = GameManager.Instance.GetTileIcon(tileType);
 
         if (tileIcon != null)
-            //Debug.Log(tileIcon.name + tileType);
 
-        if (tileIcon != null && tileIconImage != null)
-            tileIconImage.sprite = tileIcon;
+            if (tileIcon != null && tileIconImage != null)
+                tileIconImage.sprite = tileIcon;
     }
-
-    /*private void SetRandomTile()
-    {
-        if (isAntHill)
-        {
-            tileType = TileType.Anthill;
-            GameManager.Instance.OnTileClick(tileType, this);
-            return;
-        }
-        else
-        {
-            // skip none ant anthill
-            tileType = (TileType)UnityEngine.Random.Range(2, Enum.GetValues(typeof(TileType)).Length);
-        }
-
-        GameManager.Instance.RegisterTile(tileType, this);
-    }*/
 
     internal void OnTileClick()
     {
         GameManager.Instance.OnTileClick(tileType, this);
     }
 
-    internal void ShowGeneratedCountWrapper(int antsCount)
+    private void UpdateCounts()
     {
+        StartCoroutine(UpdateCountsCoroutine());
+    }
 
-        if (!gameObject.activeInHierarchy)
+    private IEnumerator UpdateCountsCoroutine()
+    {
+        while (true)
         {
+            yield return new WaitForSeconds(0.2f);
+            int antcount = GameManager.Instance.GetTileData(this).antsCount;
+            SetAntCount(antcount);
+
+            if (GameManager.Instance.TacticalView)
+            {
+                gainCount.gameObject.SetActive(false);
+                if (antcount != 0)
+                {
+                    antCount.gameObject.SetActive(true);
+                }
+
+            }
+            else
+            {
+                antCount.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    internal void StartGeneratedCount()
+    {
+        if (currentShowGainCoroutine != null)
+        {
+            StopCoroutine(currentShowGainCoroutine);
+        }
+
+        if (GameManager.Instance.TacticalView)
             return;
-        }
 
-        if (currentShowCountCoroutine != null)
-        {
-            StopCoroutine(currentShowCountCoroutine);
-        }
-        currentShowCountCoroutine = StartCoroutine(ShowGeneratedCount(antsCount));
+        currentShowGainCoroutine = StartCoroutine(ShowGeneratedCount());
     }
 
-    internal void ChangeTileType(TileType tileType)
+    internal void SetGainCount(int coint)
     {
-        this.tileType = tileType;
+        gainCount.text = $"+{coint.ToString()}";
     }
 
-    private IEnumerator ShowGeneratedCount(int antsCount)
+    internal void SetAntCount(int count)
     {
-        if (antsCount <= 0)
+        if (count == 0)
         {
+            antCount.gameObject.SetActive(false);
+        }
+        else
+        {
+            antCount.gameObject.SetActive(true);
+        }
+        antCount.text = count.ToString();
+    }
+
+    private IEnumerator ShowGeneratedCount()
+    {
+        if (GameManager.Instance.TacticalView)
             yield break;
-        }
 
         // Set text and ensure it's active.
-        generatedCount.text = $"+{antsCount}";
-        generatedCount.gameObject.SetActive(true);
+        gainCount.gameObject.SetActive(true);
 
         // Use faster fade durations.
         float fadeInTime = 0.18f;
@@ -111,7 +139,7 @@ public class GridTile : MonoBehaviour
         Color transparentColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
 
         // Start fully transparent.
-        generatedCount.color = transparentColor;
+        gainCount.color = transparentColor;
 
         // Fade in with ease-in (quadratic).
         float elapsed = 0f;
@@ -120,10 +148,10 @@ public class GridTile : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / fadeInTime);
             float easeIn = t * t; // Quadratic ease-in.
-            generatedCount.color = Color.Lerp(transparentColor, originalColor, easeIn);
+            gainCount.color = Color.Lerp(transparentColor, originalColor, easeIn);
             yield return null;
         }
-        generatedCount.color = originalColor;
+        gainCount.color = originalColor;
 
         // Hold at full opacity.
         yield return new WaitForSeconds(holdTime);
@@ -135,22 +163,27 @@ public class GridTile : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / fadeOutTime);
             float easeOut = 1 - (1 - t) * (1 - t); // Quadratic ease-out.
-            generatedCount.color = Color.Lerp(originalColor, transparentColor, easeOut);
+            gainCount.color = Color.Lerp(originalColor, transparentColor, easeOut);
             yield return null;
         }
-        generatedCount.color = transparentColor;
-        generatedCount.gameObject.SetActive(false);
+        gainCount.color = transparentColor;
+        gainCount.gameObject.SetActive(false);
     }
 
-    internal void ActivateBoost(bool v)
+    //internal void ActivateBoost(bool v)
+    //{
+    //    foreach (var item in GameManager.Instance.TileDataDictionary)
+    //    {
+    //        if (item.Key == this)
+    //        {
+    //            item.Value.isBoosted = v;
+    //            Debug.Log("IsBoosted: " + v);
+    //        }
+    //    }
+    //}
+
+    internal void ChangeTileType(TileType tileType)
     {
-        foreach (var item in GameManager.Instance.TileDataDictionary)
-        {
-            if (item.Key == this)
-            {
-                item.Value.isBoosted = v;
-                Debug.Log("IsBoosted: " + v);
-            }
-        }
+        this.tileType = tileType;
     }
 }
