@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Mountain
   m_EditorClassIdentifier: 
   tileName: Mountain
-  description: Ants can gather stone here
+  description: 'A towering mountain where ants can gather stone. The rugged terrain
+    is filled with cracks and boulders, perfect for collecting sturdy materials.
+    Each cycle, ants will gather stone to help build and strengthen their colony. '
   icon: {fileID: 21300000, guid: 6fa1463d9ce446f4fab7540bc20c7d83, type: 3}

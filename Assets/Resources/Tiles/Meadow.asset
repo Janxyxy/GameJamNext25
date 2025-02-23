@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Meadow
   m_EditorClassIdentifier: 
   tileName: Meadow
-  description: Ants can gather food here
+  description: A wide, open meadow full of fresh food for ants to gather. Colorful
+    flowers and tall grass hide tasty resources, perfect for feeding the colony.
+    Each cycle, ants will collect food to keep the colony growing and strong.
   icon: {fileID: 21300000, guid: 52cbdb1563dead64aaed6dcc027198eb, type: 3}

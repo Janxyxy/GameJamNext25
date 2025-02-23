@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem.Processors;
 using static GridTile;
 using static Room;
 
@@ -128,7 +129,7 @@ public class ResourcesManager : MonoBehaviour
         while (true)
         {
             float timer = 0f;
-            int availableFood = GetResourceAmount(GameResourceType.Food);
+
 
             while (timer < generationDuration)
             {
@@ -139,22 +140,30 @@ public class ResourcesManager : MonoBehaviour
                 yield return null;
             }
 
-
-            foreach (KeyValuePair<GridTile, GridTileData> entry in GameManager.Instance.TileDataDictionary)
+            // Meadow are generated first
+            foreach (KeyValuePair<GridTile, GridTileData> entry in GameManager.Instance.TileDataDictionary
+           .OrderBy(e => e.Value.tileType != TileType.Meadow))
             {
                 GridTile gridTile = entry.Key;
                 GridTileData tileData = entry.Value;
 
                 int antsOnTile = tileData.antsCount;
 
-                if (antsOnTile == 0)
+
+                bool dead = tileData.ChangeLifeScore(antsOnTile, gridTile.name);
+
+                int availableFood = GetResourceAmount(GameResourceType.Food);
+
+                if (dead)
                 {
+                    gridTile.Die();
                     continue;
                 }
 
-                gridTile.StartGeneratedCount();
 
-                Debug.Log($"Ants on tile {gridTile.name}");
+                gridTile.StartShowGainCount();
+
+                Debug.Log($"Ants on tile {gridTile.name} - {antsOnTile}");
 
 
                 Debug.Log($"Available food: {availableFood}");
@@ -166,35 +175,39 @@ public class ResourcesManager : MonoBehaviour
                 }
                 else if (tileData.tileType == TileType.Forest)
                 {
+                    int woodToGenerate = 0;
                     if (availableFood > 0)
                     {
                         // Generate as many wood units as food permits.
-                        int woodToGenerate = Mathf.Min(antsOnTile, availableFood);
+                        woodToGenerate = Mathf.Min(antsOnTile, availableFood);
                         RemoveResource(GameResourceType.Food, woodToGenerate);
                         AddResource(GameResourceType.Wood, woodToGenerate);
 
-                        gridTile.SetGainCount(woodToGenerate);
                     }
+                    gridTile.SetGainCount(woodToGenerate);
 
                 }
                 else if (tileData.tileType == TileType.Mountain)
                 {
+                    int stoneToGenerate = 0;
                     if (availableFood > 0)
                     {
                         // Generate as many stone units as food permits.
-                        int stoneToGenerate = Mathf.Min(antsOnTile, availableFood);
+                        stoneToGenerate = Mathf.Min(antsOnTile, availableFood);
                         RemoveResource(GameResourceType.Food, stoneToGenerate);
                         AddResource(GameResourceType.Stone, stoneToGenerate);
 
-                        gridTile.SetGainCount(stoneToGenerate);
+
                     }
+                    gridTile.SetGainCount(stoneToGenerate);
 
                 }
                 else if (tileData.tileType == TileType.Cave)
                 {
+                    int gemsGenerated = 0;
                     if (availableFood > 0)
                     {
-                        int gemsGenerated = 0;
+
                         int foodCounter = availableFood;
 
                         for (int i = 0; i < antsOnTile; i++)
@@ -212,8 +225,9 @@ public class ResourcesManager : MonoBehaviour
                             }
                         }
 
-                        gridTile.SetGainCount(gemsGenerated);
+
                     }
+                    gridTile.SetGainCount(gemsGenerated);
                 }
             }
 

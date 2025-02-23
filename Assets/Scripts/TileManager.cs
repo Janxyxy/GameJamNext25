@@ -70,7 +70,7 @@ public class TileManager : MonoBehaviour
 
         foreach (GridTile tile in foundTiles)
         {
-            if (tile.isAntHill == true)
+            if (tile.isRandomTile == true)
             {
                 tilesRND.Add(tile);
             }

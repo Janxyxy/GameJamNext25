@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static GridTile;
@@ -47,7 +48,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-       // ResourcesManager.Instance.AddResource(GameResourceType.Ant, 10);
         ResourcesManager.Instance.AddResource(GameResourceType.Ant, 1000);
         ResourcesManager.Instance.AddResource(GameResourceType.SpecialAnt, 1);
         ResourcesManager.Instance.AddResource(GameResourceType.Food, 25);
@@ -161,7 +161,7 @@ public class GameManager : MonoBehaviour
                 return removed;
             }
             else
-            {          
+            {
                 bool removed = tileDataDictionary[currentTile].RemoveAnt(count);
                 if (!removed)
                 {
@@ -202,7 +202,8 @@ public class GameManager : MonoBehaviour
     {
         if (!tileDataDictionary.ContainsKey(gridTile))
         {
-            tileDataDictionary[gridTile] = new GridTileData(tileType);
+            int maxLifeScore = GetMaxAntsCount(tileType);
+            tileDataDictionary[gridTile] = new GridTileData(tileType, maxLifeScore);
         }
     }
 
@@ -216,28 +217,6 @@ public class GameManager : MonoBehaviour
             }
         }
         return TileType.None;
-    }
-
-    internal int GetMaxResources(TileType type)
-    {
-        if(type == TileType.Meadow)
-        {
-            return Random.Range(300, 700);
-        }
-        else if (type == TileType.Forest)
-        {
-            return Random.Range(300, 700);
-        }
-        else if (type == TileType.Mountain)
-        {
-            return Random.Range(300, 700);
-
-        }else if (type == TileType.Cave)
-        {
-            return Random.Range(100, 200);
-        }
-
-        return Random.Range(300, 700);
     }
 
     internal void ToggleTacticalView()
@@ -254,12 +233,23 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
-
-    private void Update()
+    internal int GetMaxAntsCount(TileType type)
     {
-        if(tacticalView)
+        if (type == TileType.Forest || type == TileType.Mountain)
         {
-           
+            return UnityEngine.Random.Range(350, 600);
+        }
+        else if (type == TileType.Meadow)
+        {
+            return UnityEngine.Random.Range(300, 550);
+        }
+        else if(type == TileType.Cave)
+        {
+            return UnityEngine.Random.Range(200, 400);
+        }
+        else
+        {
+            return 0;
         }
     }
 }
