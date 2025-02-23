@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,9 +33,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button exitWindow;
     [SerializeField] private TextMeshProUGUI questNeeds;
 
+    [Header("Data")]
+    [SerializeField] private Transform dataSend;
+
 
 
     public static UIManager Instance { get; private set; }
+
     private void Awake()
     {
         if (Instance == null)
@@ -125,4 +130,20 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    private void ShowDataSend(bool send)
+    {
+        dataSend.gameObject.SetActive(send);
+    }
+
+    internal void DataSendOK()
+    {
+        StartCoroutine(DataSendOKCoroutine());
+    }
+
+    private IEnumerator DataSendOKCoroutine()
+    {
+        ShowDataSend(true);
+        yield return new WaitForSeconds(2f);
+        ShowDataSend(true);
+    }
 }

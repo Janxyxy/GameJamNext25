@@ -81,6 +81,8 @@ public class SendData : MonoBehaviour
             else
             {
                 Debug.Log("Úspěšně odesláno, odpověď serveru: " + request.downloadHandler.text);
+
+                UIManager.Instance.DataSendOK();
             }
         }
     }
