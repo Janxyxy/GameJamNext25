@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System;
+using static GridTile;
 
 public class TileInfoUI : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class TileInfoUI : MonoBehaviour
     [SerializeField] private Transform normalTileUI;
     [SerializeField] private Transform antHillTileUI;
 
+    [SerializeField] private Transform buttons;
+
 
 
     private void Awake()
@@ -29,44 +32,35 @@ public class TileInfoUI : MonoBehaviour
     {
         int mult = GameManager.Instance.EditMultiplier;
 
-        if (GameManager.Instance.GetTileTypeOfCurrentTile() == GridTile.TileType.None)
+        if (GameManager.Instance.CurrentTile.tileType == TileType.None)
         {
-            bool removed = GameManager.Instance.RemoveAntFromCurrentTile(mult, true);
-            if (removed)
-            {
-                ResourcesManager.Instance.AddResource(ResourcesManager.GameResourceType.SpecialAnt, GameManager.Instance.EditMultiplier);
-            }
+            return;
         }
-        else
+
+        bool removed = GameManager.Instance.RemoveAntFromCurrentTile(mult);
+        if (removed)
         {
-            bool removed = GameManager.Instance.RemoveAntFromCurrentTile(mult, false);
-            if (removed)
-            {
-                ResourcesManager.Instance.AddResource(ResourcesManager.GameResourceType.Ant, GameManager.Instance.EditMultiplier);
-            }
+            ResourcesManager.Instance.AddResource(ResourcesManager.GameResourceType.Ant, GameManager.Instance.EditMultiplier);
         }
+
     }
 
     private void OnAddAntClick()
     {
         int mult = GameManager.Instance.EditMultiplier;
 
-        if (GameManager.Instance.GetTileTypeOfCurrentTile() == GridTile.TileType.None)
+        if(GameManager.Instance.CurrentTile.tileType == TileType.None)
         {
-            bool added = ResourcesManager.Instance.RemoveResource(ResourcesManager.GameResourceType.SpecialAnt, mult);
-            if (added)
-            {
-                GameManager.Instance.AddAntToCurrentTile(mult, true);
-            }
+            return;
         }
-        else
+
+        bool added = ResourcesManager.Instance.RemoveResource(ResourcesManager.GameResourceType.Ant, mult);
+        if (added)
         {
-            bool added = ResourcesManager.Instance.RemoveResource(ResourcesManager.GameResourceType.Ant, mult);
-            if (added)
-            {
-                GameManager.Instance.AddAntToCurrentTile(mult, false);
-            }
+            GameManager.Instance.AddAntToCurrentTile(mult);
         }
+
+
     }
 
     internal void SetUI(string name, string description)
@@ -81,9 +75,28 @@ public class TileInfoUI : MonoBehaviour
         antsCount.text = count.ToString();
     }
 
-    internal void SetNormalTileUI(bool active)
+    internal void SetNormalTileUI(TileType tileType)
     {
-        normalTileUI.gameObject.SetActive(active);
-        antHillTileUI.gameObject.SetActive(!active);
+        if (tileType == TileType.Anthill)
+        {
+            normalTileUI.gameObject.SetActive(false);
+            antHillTileUI.gameObject.SetActive(true);
+        }
+        else
+        {
+            normalTileUI.gameObject.SetActive(true);
+            antHillTileUI.gameObject.SetActive(false);
+
+            if(tileType == TileType.None)
+            {
+                buttons.gameObject.SetActive(false);
+            }
+            else
+            {
+                buttons.gameObject.SetActive(true);
+            }
+        }
+
+      
     }
 }

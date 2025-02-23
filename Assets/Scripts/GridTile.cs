@@ -16,6 +16,7 @@ public class GridTile : MonoBehaviour
     [SerializeField] private float generatedCountDuration;
 
     [SerializeField] public Image fillImage;
+    [SerializeField] public Image fillColorImage;
 
     [Header("Settings")]
     [SerializeField] public bool isRandomTile;
@@ -87,34 +88,46 @@ public class GridTile : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(0.2f);
-            int antcount = GameManager.Instance.GetTileData(this).antsCount;
-            SetAntCount(antcount);
+            yield return null;
 
             GridTileData tileData = GameManager.Instance.GetTileData(this);
-
-            Debug.Log($"Tile {name} has {tileData.currentLifeScore} / {tileData.maxLifeScore} life score");
-
-            float fillAmount = (float)tileData.currentLifeScore / tileData.maxLifeScore;
-            Debug.Log($"Fill amount: {fillAmount}");
-
-            fillImage.fillAmount = fillAmount;
-
-            fillImage.color = Color.Lerp(Color.red, Color.green, fillAmount);
-
-            if (GameManager.Instance.TacticalView)
+            int antsCount = 0;
+            if (tileData != null)
             {
-                gainCount.gameObject.SetActive(false);
-                if (antcount != 0)
+                antsCount = tileData.antsCount;
+                SetAntCount(antsCount);
+
+                Debug.Log($"Tile {name} has {tileData.currentLifeScore} / {tileData.maxLifeScore} life score");
+
+                float fillAmount = (float)tileData.currentLifeScore / tileData.maxLifeScore;
+
+
+                if (tileData.tileType == TileType.Anthill || tileData.tileType == TileType.None)
                 {
-                    antCount.gameObject.SetActive(true);
+                    fillAmount = 0;
+
                 }
 
+                fillImage.fillAmount = fillAmount;
+                fillColorImage.color = Color.Lerp(Color.red, Color.green, fillAmount);
+
+                Debug.Log($"Fill amount: {fillAmount}");
+
+                if (GameManager.Instance.TacticalView)
+                {
+                    gainCount.gameObject.SetActive(false);
+                    if (antsCount != 0)
+                    {
+                        antCount.gameObject.SetActive(true);
+                    }
+
+                }
+                else
+                {
+                    antCount.gameObject.SetActive(false);
+                }
             }
-            else
-            {
-                antCount.gameObject.SetActive(false);
-            }
+            yield return new WaitForSeconds(0.2f);
         }
     }
 
@@ -125,18 +138,32 @@ public class GridTile : MonoBehaviour
             StopCoroutine(currentShowGainCoroutine);
         }
 
-        if(!isActiveAndEnabled)
+
+        if (!isActiveAndEnabled)
             return;
 
         if (GameManager.Instance.TacticalView)
             return;
+
+        GridTileData tileData = GameManager.Instance.GetTileData(this);
+        if (tileData.tileType == TileType.Anthill || tileData.tileType == TileType.None)
+        {
+            return;
+        }
 
         currentShowGainCoroutine = StartCoroutine(ShowGeneratedCount());
     }
 
     internal void SetGainCount(int count)
     {
-        if(count == 0)
+        GridTileData tileData = GameManager.Instance.GetTileData(this);
+        if (tileData.tileType == TileType.Anthill || tileData.tileType == TileType.None)
+        {
+            gainCount.text = $"";
+            return;
+        }
+
+        if (count == 0)
         {
             gainCount.text = $"";
         }
@@ -148,6 +175,13 @@ public class GridTile : MonoBehaviour
 
     internal void SetAntCount(int count)
     {
+        GridTileData tileData = GameManager.Instance.GetTileData(this);
+        if (tileData.tileType == TileType.Anthill || tileData.tileType == TileType.None)
+        {
+            gainCount.text = $"";
+            return;
+        }
+
         if (count == 0)
         {
             antCount.gameObject.SetActive(false);
@@ -228,7 +262,7 @@ public class GridTile : MonoBehaviour
     internal void Die()
     {
         GridTileData tileData = GameManager.Instance.GetTileData(this);
-        if(tileData.tileType == TileType.Anthill)
+        if (tileData.tileType == TileType.Anthill)
         {
             return;
         }

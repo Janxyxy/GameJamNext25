@@ -39,7 +39,6 @@ public class GymRoom : Room
 
     private void UpgradeMultiplier()
     {
-
         if (ResourcesManager.Instance.GetResourceAmount(ResourcesManager.GameResourceType.Gem) >= cost)
         {
             ResourcesManager.Instance.UpgradeMultiplier(cost);

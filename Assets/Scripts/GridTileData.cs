@@ -56,6 +56,9 @@ public class GridTileData
 
     public bool ChangeLifeScore(int antsOnTile, string nameName)
     {
+        if(dead)
+            return false;
+
         currentLifeScore -= antsOnTile;
 
         //Recovery
