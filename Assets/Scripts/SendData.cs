@@ -32,8 +32,8 @@ public class SendData : MonoBehaviour
     {
         while (true)
         {
-            yield return SendStats();
             yield return new WaitForSeconds(30f);
+            yield return SendStats();
         }
     }
 
