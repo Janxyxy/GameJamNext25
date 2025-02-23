@@ -23,10 +23,17 @@ ShaderVariantCollection:
       variants:
       - keywords: SOFTMASKABLE
         passType: 0
+      - keywords: SOFTMASKABLE UNDERLAY_ON
+        passType: 0
   - first: {fileID: 4800000, guid: e65241fa80a374114b3f55ed746c04d9, type: 3}
     second:
       variants:
       - keywords: SOFTMASKABLE
+        passType: 0
+  - first: {fileID: 4800000, guid: 86a60defbf085c24b80e691256a526c8, type: 3}
+    second:
+      variants:
+      - keywords: SOFTMASKABLE UNDERLAY_ON
         passType: 0
 --- !u!114 &11400000
 MonoBehaviour:

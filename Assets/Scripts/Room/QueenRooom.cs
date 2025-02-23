@@ -6,9 +6,14 @@ using UnityEngine.UI;
 
 public class QueenRooom : Room
 {
+
     [Header("UI")]
+    
     [SerializeField] private Button SubmitButton;
 
+
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         SubmitButton.onClick.AddListener(HaveQuestResources);
@@ -17,7 +22,7 @@ public class QueenRooom : Room
 
     private void HaveQuestResources()
     {
-        
+        throw new NotImplementedException();
     }
 
     private IEnumerator GenerateQuests()
@@ -34,7 +39,8 @@ public class QueenRooom : Room
     {
         throw new NotImplementedException();
     }
- 
+
+    
 
     private void GenerateNewQuest()
     {
