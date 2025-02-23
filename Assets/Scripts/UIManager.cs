@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -143,7 +144,35 @@ public class UIManager : MonoBehaviour
     private IEnumerator DataSendOKCoroutine()
     {
         ShowDataSend(true);
+        Image img = dataSend.GetComponentInChildren<Image>();
+
+        Color initialColor = img.color;
+        Color targetColor = Color.green;
+
+        float fadeDuration = 1f;
+        float timer = 0f;
+
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            img.color = Color.Lerp(initialColor, targetColor, timer / fadeDuration);
+            yield return null;
+        }
+        img.color = targetColor; 
+
         yield return new WaitForSeconds(2f);
-        ShowDataSend(true);
+
+        timer = 0f;
+
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            img.color = Color.Lerp(targetColor, initialColor, timer / fadeDuration);
+            yield return null;
+        }
+        img.color = initialColor;
+
+        ShowDataSend(false);
     }
+
 }
