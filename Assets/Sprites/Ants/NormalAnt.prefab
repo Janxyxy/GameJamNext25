@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4649829796505596778}
   - component: {fileID: 728228800508245098}
   - component: {fileID: 2731195444109866364}
-  - component: {fileID: 1240342318896307361}
+  - component: {fileID: 6039757896112834092}
   m_Layer: 0
   m_Name: NormalAnt
   m_TagString: Untagged
@@ -111,7 +111,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1240342318896307361
+--- !u!114 &6039757896112834092
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,9 +120,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 1711225780474125768}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Script: {fileID: 11500000, guid: c9495ed8024b83145b3e0bccf84140a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 1, g: 1, b: 1, a: 1}
-  m_EffectDistance: {x: 5.86, y: 2.12}
-  m_UseGraphicAlpha: 1
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineSize: 0.1

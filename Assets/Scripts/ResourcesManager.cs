@@ -215,8 +215,6 @@ public class ResourcesManager : MonoBehaviour
             RoomData roomData = entry.Value;
             int antsInRoom = roomData.antsCount;
 
-            Debug.Log($"Ants in room {room.name}");
-
             int availableFood = GetResourceAmount(GameResourceType.Food);
 
             if (antsInRoom == 0)
@@ -226,6 +224,7 @@ public class ResourcesManager : MonoBehaviour
 
             if(room.GetRoomType() == RoomType.HatchingRoom)
             {
+                Debug.Log("Hatching room!!!!!!!!!!");
                 if (availableFood > 0)
                 {
                     int antsToGenerate = Mathf.Min(antsInRoom, availableFood);

@@ -1,12 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class SendData : MonoBehaviour
 {
     private string url = "https://gamejamv4api.bagros.eu/stats";
 
+    [Serializable]
     private class StatsData
     {
         public string unity_string;
@@ -43,7 +46,8 @@ public class SendData : MonoBehaviour
             ResourcesManager.Instance.GameResources.TryGetValue(ResourcesManager.GameResourceType.Wood, out int wood);
             ResourcesManager.Instance.GameResources.TryGetValue(ResourcesManager.GameResourceType.Food, out int food);
             ResourcesManager.Instance.GameResources.TryGetValue(ResourcesManager.GameResourceType.Stone, out int stone);
-            ResourcesManager.Instance.GameResources.TryGetValue(ResourcesManager.GameResourceType.Ant, out int ants);
+            int ants = ResourcesManager.Instance.CountAllAnts();
+            //ResourcesManager.Instance.GameResources.TryGetValue(ResourcesManager.GameResourceType.Ant, out int ants);
             ResourcesManager.Instance.GameResources.TryGetValue(ResourcesManager.GameResourceType.Gem, out int gems);
 
         string json = JsonUtility.ToJson(new StatsData
