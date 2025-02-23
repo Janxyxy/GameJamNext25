@@ -1,5 +1,5 @@
 using System;
-using System.Diagnostics;
+using UnityEngine;
 
 [System.Serializable]
 public class GridTileData
@@ -54,12 +54,19 @@ public class GridTileData
         return false;
     }
 
-    public bool ChangeLifeScore(int antsOnTile)
+    public bool ChangeLifeScore(int antsOnTile, string nameName)
     {
         currentLifeScore -= antsOnTile;
-        currentLifeScore += maxLifeScore;
 
-        currentLifeScore = Math.Max(0, maxLifeScore);
+        //Recovery
+        float recovery = maxLifeScore / 100 * UnityEngine.Random.Range(1, 5);
+
+        currentLifeScore += (int)recovery;
+
+
+        currentLifeScore = Math.Min(Math.Max(0, currentLifeScore), maxLifeScore);
+
+        //Debug.Log($"Tile {nameName} - {tileType} has {currentLifeScore} / {maxLifeScore} life score with ant {antsOnTile} recovering {recovery}");
 
         if (currentLifeScore <= 0)
         {

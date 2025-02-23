@@ -150,7 +150,7 @@ public class ResourcesManager : MonoBehaviour
                 int antsOnTile = tileData.antsCount;
 
 
-                bool dead = tileData.ChangeLifeScore(antsOnTile);
+                bool dead = tileData.ChangeLifeScore(antsOnTile, gridTile.name);
 
                 int availableFood = GetResourceAmount(GameResourceType.Food);
 

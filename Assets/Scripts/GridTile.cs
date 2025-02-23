@@ -100,6 +100,8 @@ public class GridTile : MonoBehaviour
 
             fillImage.fillAmount = fillAmount;
 
+            fillImage.color = Color.Lerp(Color.red, Color.green, fillAmount);
+
             if (GameManager.Instance.TacticalView)
             {
                 gainCount.gameObject.SetActive(false);
