@@ -8,12 +8,14 @@ public class HatchingRoom : Room
     [SerializeField] private TextMeshProUGUI HatchingRoomWorkers;
     protected override void OnAddAntsClick()
     {
+        Debug.Log("Added Ants");
         GameManager.Instance.RemoveAntsFromRoom(this);
         WorkersChanged();
     }
 
     protected override void OnRemoveAntsClick()
     {
+        Debug.Log("Remove Ants");
         GameManager.Instance.AddAntsToRoom(this);
         WorkersChanged();
     }

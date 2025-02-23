@@ -162,7 +162,7 @@ public class ResourcesManager : MonoBehaviour
 
                 gridTile.StartShowGainCount();
 
-                Debug.Log($"Ants on tile {gridTile.name} - {antsOnTile}");
+                //Debug.Log($"Ants on tile {gridTile.name} - {antsOnTile}");
 
 
                 Debug.Log($"Available food: {availableFood}");

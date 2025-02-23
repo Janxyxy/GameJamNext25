@@ -21,6 +21,8 @@ public abstract class Room : MonoBehaviour
         addAnts.onClick.AddListener(OnAddAntsClick);
         removeAnts.onClick.AddListener(OnRemoveAntsClick);
 
+        Debug.Log("Room Awake");
+
         RegisterRoom();
     }
 

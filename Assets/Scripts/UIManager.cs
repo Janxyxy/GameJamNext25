@@ -25,9 +25,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Sprite tacticalIcon;
     [SerializeField] private Sprite gainIcon;
 
-    [Header("Queen Quest Button")]
-    [SerializeField] private Button queenPopUpButton;
-
 
     [Header("Data")]
     [SerializeField] private Transform dataSend;

@@ -97,7 +97,7 @@ public class GridTile : MonoBehaviour
                 antsCount = tileData.antsCount;
                 SetAntCount(antsCount);
 
-                Debug.Log($"Tile {name} has {tileData.currentLifeScore} / {tileData.maxLifeScore} life score");
+                //Debug.Log($"Tile {name} has {tileData.currentLifeScore} / {tileData.maxLifeScore} life score");
 
                 float fillAmount = (float)tileData.currentLifeScore / tileData.maxLifeScore;
 
