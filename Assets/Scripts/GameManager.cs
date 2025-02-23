@@ -37,10 +37,6 @@ public class GameManager : MonoBehaviour
         }
 
         Loadresources();
-
-        ResourcesManager.Instance.AddResource(GameResourceType.Ant, 10);
-        ResourcesManager.Instance.AddResource(GameResourceType.SpecialAnt, 1);
-        ResourcesManager.Instance.AddResource(GameResourceType.Food, 25);
     }
 
     private void Loadresources()
@@ -48,6 +44,11 @@ public class GameManager : MonoBehaviour
         tileInfos.AddRange(Resources.LoadAll<TileSO>("Tiles"));
     }
 
+    private void Start()
+    {
+        ResourcesManager.Instance.AddResource(GameResourceType.Ant, 10);
+        ResourcesManager.Instance.AddResource(GameResourceType.Food, 25);
+    }
 
     internal void OnTileClick(TileType tileType, GridTile gridTile)
     {

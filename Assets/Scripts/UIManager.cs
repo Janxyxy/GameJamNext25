@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static ResourcesManager;
@@ -15,7 +16,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Image buttonImage;
     [SerializeField] private Sprite mapIcon;
     [SerializeField] private Sprite antHillIcon;
-
 
     public static UIManager Instance { get; private set; }
     private void Awake()
