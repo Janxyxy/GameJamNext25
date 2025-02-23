@@ -9,12 +9,17 @@ public class GridTile : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private Image tileIconImage;
+
     [SerializeField] private TextMeshProUGUI gainCount;
     [SerializeField] private TextMeshProUGUI antCount;
 
     [SerializeField] private float generatedCountDuration;
 
-    [SerializeField] public bool isAntHill;
+    [SerializeField] public Image fillImage;
+
+    [Header("Settings")]
+    [SerializeField] public bool isRandomTile;
+
 
     private Coroutine currentShowGainCoroutine;
     private Coroutine updateCountsCorutine;
@@ -57,7 +62,7 @@ public class GridTile : MonoBehaviour
 
     private void OnEnable()
     {
-        UpdateCounts();
+        StartUpdateCounts();
     }
 
     private void OnDisable()
@@ -73,7 +78,7 @@ public class GridTile : MonoBehaviour
         }
     }
 
-    internal void UpdateCounts()
+    internal void StartUpdateCounts()
     {
         updateCountsCorutine = StartCoroutine(UpdateCountsCoroutine());
     }
@@ -85,6 +90,15 @@ public class GridTile : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
             int antcount = GameManager.Instance.GetTileData(this).antsCount;
             SetAntCount(antcount);
+
+            GridTileData tileData = GameManager.Instance.GetTileData(this);
+
+            Debug.Log($"Tile {name} has {tileData.currentLifeScore} / {tileData.maxLifeScore} life score");
+
+            float fillAmount = (float)tileData.currentLifeScore / tileData.maxLifeScore;
+            Debug.Log($"Fill amount: {fillAmount}");
+
+            fillImage.fillAmount = fillAmount;
 
             if (GameManager.Instance.TacticalView)
             {
@@ -99,17 +113,18 @@ public class GridTile : MonoBehaviour
             {
                 antCount.gameObject.SetActive(false);
             }
-
-            Debug.Log("AAA");
         }
     }
 
-    internal void StartGeneratedCount()
+    internal void StartShowGainCount()
     {
         if (currentShowGainCoroutine != null)
         {
             StopCoroutine(currentShowGainCoroutine);
         }
+
+        if(!isActiveAndEnabled)
+            return;
 
         if (GameManager.Instance.TacticalView)
             return;
@@ -117,9 +132,16 @@ public class GridTile : MonoBehaviour
         currentShowGainCoroutine = StartCoroutine(ShowGeneratedCount());
     }
 
-    internal void SetGainCount(int coint)
+    internal void SetGainCount(int count)
     {
-        gainCount.text = $"+{coint.ToString()}";
+        if(count == 0)
+        {
+            gainCount.text = $"";
+        }
+        else
+        {
+            gainCount.text = $"+{count.ToString()}";
+        }
     }
 
     internal void SetAntCount(int count)
@@ -199,5 +221,21 @@ public class GridTile : MonoBehaviour
     internal void ChangeTileType(TileType tileType)
     {
         this.tileType = tileType;
+    }
+
+    internal void Die()
+    {
+        GridTileData tileData = GameManager.Instance.GetTileData(this);
+        if(tileData.tileType == TileType.Anthill)
+        {
+            return;
+        }
+
+        Debug.Log($"Tile {name} died");
+        tileType = TileType.None;
+        tileData.antsCount = 0;
+        tileData.tileType = TileType.None;
+
+        SetTileIcon();
     }
 }

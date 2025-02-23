@@ -7,16 +7,21 @@ public class GridTileData
     public GridTile.TileType tileType;
     public int antsCount;
     public int specialAntsCount;
-    public bool isBoosted;
-    public int maxResorces;
 
-    public GridTileData(GridTile.TileType type)
+    public int maxLifeScore;
+    public int currentLifeScore;
+
+    public bool dead;
+
+    public GridTileData(GridTile.TileType type, int maxLifeScore)
     {
         tileType = type;
-        antsCount = 0; 
+        antsCount = 0;
         specialAntsCount = 0;
-        maxResorces = GameManager.Instance.GetMaxResources(type);
-        isBoosted = false;
+        this.maxLifeScore = maxLifeScore;
+        currentLifeScore = maxLifeScore;
+
+        dead = false;
     }
 
     public void AddAnt(int count)
@@ -48,8 +53,20 @@ public class GridTileData
         }
         return false;
     }
-    public void Boost(bool boost)
+
+    public bool ChangeLifeScore(int antsOnTile)
     {
-        isBoosted = boost;
+        currentLifeScore -= antsOnTile;
+        currentLifeScore += maxLifeScore;
+
+        currentLifeScore = Math.Max(0, maxLifeScore);
+
+        if (currentLifeScore <= 0)
+        {
+            dead = true;
+            return true;
+        }
+        return false;
     }
+
 }

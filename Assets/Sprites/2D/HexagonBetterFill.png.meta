@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: eca39dbc660f7524ebba9a19fb9319c8
+guid: 0f487b1880396e140b953a5ce3ba69e5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7002226876269345357
-    second: itchio_0
+      213: -1549218616590245201
+    second: HexagonBetterFill_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -97,7 +97,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: WebGL
+    buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -110,7 +110,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: Android
+    buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -139,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: itchio_0
+      name: HexagonBetterFill_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 15
         y: 0
-        width: 860
-        height: 1060
+        width: 226
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d4a3abc9e38ec2160800000000000000
-      internalID: 7002226876269345357
+      spriteID: fa267b650e1108ae0800000000000000
+      internalID: -1549218616590245201
       vertices: []
       indices: 
       edges: []
@@ -173,8 +173,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      itchio_0: 7002226876269345357
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
