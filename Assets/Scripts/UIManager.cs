@@ -28,15 +28,13 @@ public class UIManager : MonoBehaviour
     [Header("Queen Quest Button")]
     [SerializeField] private Button queenPopUpButton;
 
-    [Header("Queen Quest Window")]
-
-    [SerializeField] private GameObject questPopUp;
-    [SerializeField] private Button exitWindow;
-    [SerializeField] private TextMeshProUGUI questNeeds;
 
     [Header("Data")]
     [SerializeField] private Transform dataSend;
 
+    [Header("Help")]
+    [SerializeField] private Button helpBbutton;
+    [SerializeField] private Transform helpTransform;
 
 
     public static UIManager Instance { get; private set; }
@@ -55,28 +53,13 @@ public class UIManager : MonoBehaviour
         navigateButton.onClick.AddListener(ChangeNavigation);
         tacticalViewButton.onClick.AddListener(ChangeTacticalView);
 
-        questPopUp.SetActive(false);
-        queenPopUpButton.onClick.AddListener(OpenQuestWindow);
-        exitWindow.onClick.AddListener(ExitQuestWindow);
+
+        helpBbutton.onClick.AddListener(ShowHelp);
     }
 
-    private void ExitQuestWindow()
+    private void ShowHelp()
     {
-        questPopUp.SetActive(false);
-
-    }
-
-    private void OpenQuestWindow()
-    {
-        if (!questPopUp.activeSelf) // Check if the questPopUp is currently inactive
-        {
-            questPopUp.SetActive(true); // Activate the questPopUp
-        }
-        else
-        {
-            questPopUp.SetActive(false);
-
-        }
+        helpTransform.gameObject.SetActive(true);
     }
 
     private void ChangeNavigation()
@@ -175,4 +158,8 @@ public class UIManager : MonoBehaviour
         ShowDataSend(false);
     }
 
+    internal void ShowHelp(bool help)
+    {
+        helpTransform.gameObject.SetActive(help);
+    }
 }

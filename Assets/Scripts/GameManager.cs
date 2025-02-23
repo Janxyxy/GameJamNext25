@@ -41,6 +41,8 @@ public class GameManager : MonoBehaviour
         }
 
         Loadresources();
+
+        UIManager.Instance.ShowHelp(true);
     }
 
     private void Loadresources()
