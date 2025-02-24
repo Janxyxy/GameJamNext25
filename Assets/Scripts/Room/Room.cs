@@ -4,13 +4,11 @@ using UnityEngine.UI;
 
 public abstract class Room : MonoBehaviour
 {
-    [SerializeField] private Button addAnts;
-    [SerializeField] private Button removeAnts;
-
-    protected RoomType roomType;
+    protected RoomType roomType = RoomType.None;
 
     public enum RoomType
     {
+        None,
         HatchingRoom,
         GymRoom,
         QueenRoom
@@ -18,30 +16,15 @@ public abstract class Room : MonoBehaviour
 
     protected virtual void Awake()
     {
-        addAnts.onClick.AddListener(OnAddAntsClick);
-        removeAnts.onClick.AddListener(OnRemoveAntsClick);
-
-        Debug.Log("Room Awake");
-
         RegisterRoom();
     }
 
-    private void RegisterRoom()
+    protected void RegisterRoom()
     {
         GameManager.Instance.RegisterRoom(this);
     }
 
-    protected virtual void OnRemoveAntsClick()
-    {
-       
-    }
-
-    protected virtual void OnAddAntsClick()
-    {
-      
-    }
-
-    public RoomType GetRoomType()
+    internal RoomType GetRoomType()
     {
         return roomType;
     }

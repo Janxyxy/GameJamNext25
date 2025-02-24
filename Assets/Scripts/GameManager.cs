@@ -6,9 +6,26 @@ using static ResourcesManager;
 
 public class GameManager : MonoBehaviour
 {
-
     [SerializeField] private TileInfoUI tileInfoUI;
-    [SerializeField] private List<TileSO> tileInfos = new List<TileSO>();
+
+    [Header("Settings")]
+    [SerializeField] private int countdownTimeInSeconds = 301;
+    [SerializeField] private float generatedCountDuration = 0.75f;
+    [SerializeField] private int queenQuestMin = 25;
+    [SerializeField] private int queenQuestMax = 45;
+    [SerializeField] private bool devMode = false;
+
+
+    public int QueenQuestMin => queenQuestMin;
+    public int QueenQuestMax => queenQuestMax;
+    public int CountdownTimeInSeconds => countdownTimeInSeconds;
+    public bool DevMode => devMode;
+    public float GeneratedCountDuration => generatedCountDuration;
+
+    private bool canAntsBeGenerated = true;
+
+
+    private List<TileSO> tileInfos = new List<TileSO>();
 
     public static GameManager Instance { get; private set; }
 
@@ -41,8 +58,6 @@ public class GameManager : MonoBehaviour
         }
 
         Loadresources();
-
-        UIManager.Instance.ShowHelp(true);
     }
 
     private void Loadresources()
@@ -54,6 +69,15 @@ public class GameManager : MonoBehaviour
     {
         ResourcesManager.Instance.AddResource(GameResourceType.Ant, 10);
         ResourcesManager.Instance.AddResource(GameResourceType.Food, 25);
+
+        if (devMode)
+        {
+            ResourcesManager.Instance.AddResource(GameResourceType.Wood, 1000);
+             ResourcesManager.Instance.AddResource(GameResourceType.Stone, 1000);
+             ResourcesManager.Instance.AddResource(GameResourceType.Ant, 1000);
+             ResourcesManager.Instance.AddResource(GameResourceType.Gem, 1000);
+        }
+       
     }
 
     internal void OnTileClick(TileType tileType, GridTile gridTile)
@@ -184,7 +208,7 @@ public class GameManager : MonoBehaviour
     {
         if (!tileDataDictionary.ContainsKey(gridTile))
         {
-            int maxLifeScore = GetMaxAntsCount(tileType);
+            int maxLifeScore = GetLifrScore(tileType);
             tileDataDictionary[gridTile] = new GridTileData(tileType, maxLifeScore);
         }
     }
@@ -220,23 +244,33 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
-    internal int GetMaxAntsCount(TileType type)
+    internal int GetLifrScore(TileType type)
     {
         if (type == TileType.Forest || type == TileType.Mountain)
         {
-            return UnityEngine.Random.Range(350, 600);
+            return UnityEngine.Random.Range(450, 750);
         }
         else if (type == TileType.Meadow)
         {
-            return UnityEngine.Random.Range(300, 550);
+            return UnityEngine.Random.Range(600, 800);
         }
         else if (type == TileType.Cave)
         {
-            return UnityEngine.Random.Range(200, 400);
+            return UnityEngine.Random.Range(300, 500);
         }
         else
         {
             return 0;
         }
+    }
+
+    internal void SetCanBeAntsGenerated(bool value)
+    {
+        canAntsBeGenerated = value;
+    }
+
+    internal bool CanAntsBeGenerated()
+    {
+        return canAntsBeGenerated;
     }
 }

@@ -1,8 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem.Processors;
 using static GridTile;
 using static Room;
 
@@ -14,6 +14,7 @@ public class ResourcesManager : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float generationDuration = 3f; //in seconds
+    public float GenerationDuration => generationDuration;
 
     public static ResourcesManager Instance { get; private set; }
 
@@ -27,6 +28,8 @@ public class ResourcesManager : MonoBehaviour
     private int allAnts;
     public int AllAnts => allAnts;
 
+    public event Action<GameResourceType> OnResourceChanged;
+
     public enum GameResourceType
     {
         Ant,
@@ -35,8 +38,6 @@ public class ResourcesManager : MonoBehaviour
         Stone,
         Gem
     }
-
-
     private void Awake()
     {
         if (Instance == null)
@@ -84,7 +85,7 @@ public class ResourcesManager : MonoBehaviour
         }
     }
 
-    public void AddResource(GameResourceType type, int amount)
+    internal void AddResource(GameResourceType type, int amount)
     {
         if (resources.ContainsKey(type))
         {
@@ -93,11 +94,13 @@ public class ResourcesManager : MonoBehaviour
 
         Debug.Log($"Added {amount} {type}. Total: {resources[type]}");
 
+        OnResourceChanged?.Invoke(type);
+
         // Update count in UI
         resourceUIs[type].SetCount(resources[type]);
     }
 
-    public bool RemoveResource(GameResourceType type, int amount)
+    internal bool RemoveResource(GameResourceType type, int amount)
     {
         if (resources.ContainsKey(type) && resources[type] >= amount)
         {
@@ -106,6 +109,8 @@ public class ResourcesManager : MonoBehaviour
             // Update count in UI
             resourceUIs[type].SetCount(resources[type]);
 
+            OnResourceChanged?.Invoke(type);
+
             return true;
         }
 
@@ -113,12 +118,12 @@ public class ResourcesManager : MonoBehaviour
         return false;
     }
 
-    public int GetResourceAmount(GameResourceType type)
+    internal int GetResourceAmount(GameResourceType type)
     {
         return resources.ContainsKey(type) ? resources[type] : 0;
     }
 
-    public bool HasEnoughResource(GameResourceType type, int amount)
+    internal bool HasEnoughResource(GameResourceType type, int amount)
     {
         return resources.ContainsKey(type) && resources[type] >= amount;
     }
@@ -146,19 +151,10 @@ public class ResourcesManager : MonoBehaviour
                 GridTile gridTile = entry.Key;
                 GridTileData tileData = entry.Value;
 
-                int antsOnTile = tileData.antsCount;
-
-
-                bool dead = tileData.ChangeLifeScore(antsOnTile, gridTile.name);
+                int antsOnTile = tileData.antsCount;           
 
                 int availableFood = GetResourceAmount(GameResourceType.Food);
-
-                if (dead)
-                {
-                    gridTile.Die();
-                    continue;
-                }
-
+                bool dead = false;
 
                 gridTile.StartShowGainCount();
 
@@ -171,6 +167,8 @@ public class ResourcesManager : MonoBehaviour
                 {
                     AddResource(GameResourceType.Food, antsOnTile);
                     gridTile.SetGainCount(antsOnTile);
+
+                    dead = tileData.ChangeLifeScore(antsOnTile, gridTile.name);
                 }
                 else if (tileData.tileType == TileType.Forest)
                 {
@@ -184,6 +182,7 @@ public class ResourcesManager : MonoBehaviour
 
                     }
                     gridTile.SetGainCount(woodToGenerate);
+                    dead = tileData.ChangeLifeScore(woodToGenerate, gridTile.name);
 
                 }
                 else if (tileData.tileType == TileType.Mountain)
@@ -199,11 +198,14 @@ public class ResourcesManager : MonoBehaviour
 
                     }
                     gridTile.SetGainCount(stoneToGenerate);
+                    dead = tileData.ChangeLifeScore(stoneToGenerate, gridTile.name);
 
                 }
                 else if (tileData.tileType == TileType.Cave)
                 {
                     int gemsGenerated = 0;
+                    int foodUsed = 0;
+
                     if (availableFood > 0)
                     {
 
@@ -212,21 +214,26 @@ public class ResourcesManager : MonoBehaviour
                         for (int i = 0; i < antsOnTile; i++)
                         {
                             RemoveResource(GameResourceType.Food, 1);
+                            foodUsed++;
                             if (foodCounter <= 0)
                                 break;
 
-                            if (Random.value < 0.10f)
+                            if (UnityEngine.Random.value < 0.10f)
                             {
-
                                 AddResource(GameResourceType.Gem, 1);
                                 gemsGenerated++;
                                 foodCounter--;
                             }
                         }
-
-
                     }
                     gridTile.SetGainCount(gemsGenerated);
+                    dead = tileData.ChangeLifeScore(foodUsed, gridTile.name);
+                }
+
+                if (dead)
+                {
+                    gridTile.Die();
+                    continue;
                 }
             }
 
@@ -254,14 +261,23 @@ public class ResourcesManager : MonoBehaviour
 
             if (room.GetRoomType() == RoomType.HatchingRoom)
             {
-                if (availableFood >= 4)
+                int antsToGenerate = 0;
+
+                bool canGenerateAnts = GameManager.Instance.CanAntsBeGenerated();
+                bool haveFood = availableFood >= 4;
+
+                if (canGenerateAnts && haveFood)
                 {
-
-
                     int maxPossibleAnts = availableFood / 4;
-                    int antsToGenerate = Mathf.Min(antsInRoom, maxPossibleAnts);
+                    antsToGenerate = Mathf.Min(antsInRoom, maxPossibleAnts);
                     RemoveResource(GameResourceType.Food, antsToGenerate * 4);
-                    AddResource(GameResourceType.Ant, antsToGenerate);
+                    AddResource(GameResourceType.Ant, antsToGenerate); 
+                }
+
+                if (room is HatchingRoom hatchingRoom)
+                {
+                    hatchingRoom.SetAntsGain(antsToGenerate, haveFood, canGenerateAnts);
+                    hatchingRoom.ShowGain();
                 }
             }
         }
@@ -270,28 +286,37 @@ public class ResourcesManager : MonoBehaviour
     internal int CountAllAnts()
     {
         int unusedAnts = GetResourceAmount(GameResourceType.Ant);
-        int tileAnts = 0;
+        int allAnts = 0;
 
         foreach (KeyValuePair<GridTile, GridTileData> entry in GameManager.Instance.TileDataDictionary)
         {
             GridTile gridTile = entry.Key;
             GridTileData tileData = entry.Value;
 
-            tileAnts += tileData.antsCount;
-
+            allAnts += tileData.antsCount;
         }
 
-        //TODO cound ants from rooms
+        foreach (KeyValuePair<Room, RoomData> entry in GameManager.Instance.RoomDataDictionary)
+        {
+            Room room = entry.Key;
+            RoomData roomData = entry.Value;
+            if (room.GetRoomType() == RoomType.HatchingRoom)
+            {
+                allAnts += roomData.antsCount;
+            }
+        }
 
-        allAnts = unusedAnts + tileAnts;
-        return allAnts;
+        this.allAnts = unusedAnts + allAnts;
+        return this.allAnts;
     }
 
-    public void UpgradeMultiplier(int minusGem)
+    internal void ShortGenerationDuration(float ammount)
     {
-        RemoveResource(GameResourceType.Gem, minusGem);
-        generationDuration -= 0.17f;
+        generationDuration -= ammount;
+        generationDuration = Mathf.Max(0.1f, generationDuration);
+
         Debug.Log($"tick ratio {generationDuration}");
+
     }
 }
 

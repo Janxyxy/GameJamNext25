@@ -31,7 +31,11 @@ public class UIManager : MonoBehaviour
 
     [Header("Help")]
     [SerializeField] private Button helpBbutton;
+    [SerializeField] private Button closeHelpButton;
     [SerializeField] private Transform helpTransform;
+
+    [Header("Dev")]
+    [SerializeField] private Transform devCanvas;
 
 
     public static UIManager Instance { get; private set; }
@@ -50,13 +54,28 @@ public class UIManager : MonoBehaviour
         navigateButton.onClick.AddListener(ChangeNavigation);
         tacticalViewButton.onClick.AddListener(ChangeTacticalView);
 
-
-        helpBbutton.onClick.AddListener(ShowHelp);
+        helpBbutton.onClick.AddListener(() => ShowHelp(true));
+        closeHelpButton.onClick.AddListener(() => ShowHelp(false));
+    }
+    private void Start()
+    {
+        //DevCanvas();
+        ShowHelp(true);
+        antHillCanvas.gameObject.SetActive(true);
     }
 
-    private void ShowHelp()
+    private void ShowHelp(bool show)
     {
-        helpTransform.gameObject.SetActive(true);
+        helpTransform.gameObject.SetActive(show);
+        if (show)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
+
     }
 
     private void ChangeNavigation()
@@ -86,8 +105,10 @@ public class UIManager : MonoBehaviour
             //SCS.ResetCamera();
         }
 
-        antHillCanvas.gameObject.SetActive(!show);
+        //antHillCanvas.gameObject.SetActive(!show);
         managerUI.gameObject.SetActive(show);
+
+        helpBbutton.gameObject.SetActive(show);
 
         if (show)
         {
@@ -138,7 +159,7 @@ public class UIManager : MonoBehaviour
             img.color = Color.Lerp(initialColor, targetColor, timer / fadeDuration);
             yield return null;
         }
-        img.color = targetColor; 
+        img.color = targetColor;
 
         yield return new WaitForSeconds(2f);
 
@@ -155,8 +176,8 @@ public class UIManager : MonoBehaviour
         ShowDataSend(false);
     }
 
-    internal void ShowHelp(bool help)
+    internal void DevCanvas()
     {
-        helpTransform.gameObject.SetActive(help);
+        devCanvas.gameObject.SetActive(GameManager.Instance.DevMode);
     }
 }

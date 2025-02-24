@@ -20,15 +20,10 @@ public class TileInfoUI : MonoBehaviour
 
     [SerializeField] private Transform buttons;
 
-    [SerializeField] private AudioClip addAnt;
-    private AudioSource audioSource;
-
-
     private void Awake()
     {
         addAntButton.onClick.AddListener(OnAddAntClick);
         removeAntButton.onClick.AddListener(OnRemoveAntClick);
-        audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     private void OnRemoveAntClick()
@@ -44,7 +39,7 @@ public class TileInfoUI : MonoBehaviour
         if (removed)
         {
             ResourcesManager.Instance.AddResource(ResourcesManager.GameResourceType.Ant, GameManager.Instance.EditMultiplier);
-            audioSource.PlayOneShot(addAnt);
+            SoundManager.Instance.PlayClickSound();
         }
     }
 
@@ -61,7 +56,7 @@ public class TileInfoUI : MonoBehaviour
         if (added)
         {
             GameManager.Instance.AddAntToCurrentTile(mult);
-            audioSource.PlayOneShot(addAnt);
+            SoundManager.Instance.PlayClickSound();
         }
     }
 

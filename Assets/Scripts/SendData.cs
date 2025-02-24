@@ -39,6 +39,11 @@ public class SendData : MonoBehaviour
 
     private IEnumerator SendStats()
     {
+        if (GameManager.Instance.DevMode)
+        {
+            yield break;
+        }
+
         //string json = JsonUtility.ToJson(stats);
 
         using (UnityWebRequest request = new UnityWebRequest(url, "POST"))

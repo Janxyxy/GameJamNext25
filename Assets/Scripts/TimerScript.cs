@@ -5,11 +5,13 @@ using System.Collections;
 
 public class TimerScript : MonoBehaviour
 {
-    [SerializeField] private float countdownTime = 300f;
-    [SerializeField] private TMP_Text timerText;
+    private TMP_Text timerText;
+    private int countdownTime;
 
     private void Start()
     {
+        countdownTime = GameManager.Instance.CountdownTimeInSeconds;
+        timerText = GetComponent<TMP_Text>();
         StartCoroutine(TimerCoroutine());
     }
 
@@ -21,6 +23,7 @@ public class TimerScript : MonoBehaviour
             yield return new WaitForSeconds(1f);
             countdownTime--;
         }
+
 
         SceneManager.LoadScene("End Screen");
     }

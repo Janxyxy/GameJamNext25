@@ -13,7 +13,7 @@ public class GridTile : MonoBehaviour
     [SerializeField] private TextMeshProUGUI gainCount;
     [SerializeField] private TextMeshProUGUI antCount;
 
-    [SerializeField] private float generatedCountDuration;
+
 
     [SerializeField] public Image fillImage;
     [SerializeField] public Image fillColorImage;
@@ -26,8 +26,8 @@ public class GridTile : MonoBehaviour
     private Coroutine updateCountsCorutine;
 
     private Color defaultColor;
-
     private Button button;
+
     public enum TileType
     {
         None,
@@ -111,7 +111,7 @@ public class GridTile : MonoBehaviour
                 fillImage.fillAmount = fillAmount;
                 fillColorImage.color = Color.Lerp(Color.red, Color.green, fillAmount);
 
-                Debug.Log($"Fill amount: {fillAmount}");
+                //Debug.Log($"Fill amount: {fillAmount}");
 
                 if (GameManager.Instance.TacticalView)
                 {
@@ -146,10 +146,11 @@ public class GridTile : MonoBehaviour
             return;
 
         GridTileData tileData = GameManager.Instance.GetTileData(this);
-        if (tileData.tileType == TileType.Anthill || tileData.tileType == TileType.None)
-        {
-            return;
-        }
+
+        //if (tileData.tileType == TileType.Anthill || tileData.tileType == TileType.None)
+        //{
+        //    return;
+        //}
 
         currentShowGainCoroutine = StartCoroutine(ShowGeneratedCount());
     }
@@ -204,7 +205,7 @@ public class GridTile : MonoBehaviour
         // Use faster fade durations.
         float fadeInTime = 0.18f;
         float fadeOutTime = 0.18f;
-        float holdTime = generatedCountDuration; // Duration to hold full opacity.
+        float holdTime = GameManager.Instance.GeneratedCountDuration; 
 
         // Use the stored default color as the target color.
         Color originalColor = defaultColor;
@@ -242,18 +243,6 @@ public class GridTile : MonoBehaviour
         gainCount.gameObject.SetActive(false);
     }
 
-    //internal void ActivateBoost(bool v)
-    //{
-    //    foreach (var item in GameManager.Instance.TileDataDictionary)
-    //    {
-    //        if (item.Key == this)
-    //        {
-    //            item.Value.isBoosted = v;
-    //            Debug.Log("IsBoosted: " + v);
-    //        }
-    //    }
-    //}
-
     internal void ChangeTileType(TileType tileType)
     {
         this.tileType = tileType;
@@ -262,10 +251,24 @@ public class GridTile : MonoBehaviour
     internal void Die()
     {
         GridTileData tileData = GameManager.Instance.GetTileData(this);
-        if (tileData.tileType == TileType.Anthill)
+        if (tileData.tileType == TileType.Anthill || tileData.tileType == TileType.None)
         {
             return;
         }
+
+        foreach (var item in GameManager.Instance.TileDataDictionary)
+        {
+            GridTile gridTile = item.Key;
+            GridTileData data = item.Value;
+
+            if (gridTile == this)
+            {
+                gridTile.SetAntCount(0);
+                gridTile.SetGainCount(0);
+            }
+        }
+
+
 
         Debug.Log($"Tile {name} died");
         tileType = TileType.None;
