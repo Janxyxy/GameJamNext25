@@ -262,15 +262,16 @@ public class ResourcesManager : MonoBehaviour
             if (room.GetRoomType() == RoomType.HatchingRoom)
             {
                 int antsToGenerate = 0;
+                int costForAnt = 1;
 
                 bool canGenerateAnts = GameManager.Instance.CanAntsBeGenerated();
-                bool haveFood = availableFood >= 4;
+                bool haveFood = availableFood >= costForAnt;
 
                 if (canGenerateAnts && haveFood)
                 {
-                    int maxPossibleAnts = availableFood / 4;
+                    int maxPossibleAnts = availableFood / costForAnt;
                     antsToGenerate = Mathf.Min(antsInRoom, maxPossibleAnts);
-                    RemoveResource(GameResourceType.Food, antsToGenerate * 4);
+                    RemoveResource(GameResourceType.Food, antsToGenerate * costForAnt);
                     AddResource(GameResourceType.Ant, antsToGenerate); 
                 }
 

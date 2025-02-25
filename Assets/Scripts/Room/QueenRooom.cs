@@ -92,6 +92,7 @@ public class QueenRooom : Room
     private IEnumerator GenerateQuests()
     {
         timeToNextQuest = UnityEngine.Random.Range(GameManager.Instance.QueenQuestMin, GameManager.Instance.QueenQuestMax);
+        Debug.Log(timeToNextQuest);
         UpdateRequestUI();
 
         while (timeToNextQuest > 0)
@@ -114,9 +115,9 @@ public class QueenRooom : Room
 
     private void GenerateQuest()
     {
-        int difficultyMultiplier = Mathf.Max(1, questsCompleted + 1);
-        requestedStone = UnityEngine.Random.Range(15, 45) * difficultyMultiplier;
-        requestedWood = UnityEngine.Random.Range(15, 45) * difficultyMultiplier;
+        int difficultyMultiplier = Mathf.Max(1, Mathf.RoundToInt(Mathf.Pow(1.2f, questsCompleted + 1)));
+        requestedStone = UnityEngine.Random.Range(40, 80) * difficultyMultiplier;
+        requestedWood = UnityEngine.Random.Range(40, 80) * difficultyMultiplier;
 
         if (questTime.gameObject.activeInHierarchy)
         {

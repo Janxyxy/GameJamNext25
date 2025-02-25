@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private int countdownTimeInSeconds = 301;
     [SerializeField] private float generatedCountDuration = 0.75f;
-    [SerializeField] private int queenQuestMin = 25;
-    [SerializeField] private int queenQuestMax = 45;
+    [SerializeField] private int queenQuestMin = 40;
+    [SerializeField] private int queenQuestMax = 55;
     [SerializeField] private bool devMode = false;
 
 
